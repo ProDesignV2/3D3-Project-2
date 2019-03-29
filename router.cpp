@@ -91,24 +91,20 @@ main(int argc, char *argv[])
 		exit(2);
 	} 
 	
-	// Reap all dead processes here ?
-	
 	// Wait for connections and deal with them
 	while(1){
 
 		// Reset buffer
 		memset(&buf, 0, sizeof buf);
 		n_bytes = 0;	
-		
-		// Create empty HTTP request
-		HTTP_Request req;
+		their_addr_size = sizeof their_addr;
 
 		printf("router : waiting for connections...\n");
 
-		while(!(req.append(buf, n_bytes))){
-			n_bytes = recvfrom(router_fd, buf, sizeof buf, 0,
-				           (struct sockaddr *)&their_addr, &their_addr_size);
-			if(n_bytes == -1) { perror("recvfrom"); exit(0); }
+		if((n_bytes = recvfrom(router_fd, buf, sizeof buf, 0, (struct sockaddr *)&their_addr, &their_addr_size)) == -1)
+		{ 
+			perror("recvfrom");
+			exit(0); 
 		}
 
 		// Print the other router's address and port details
@@ -116,36 +112,31 @@ main(int argc, char *argv[])
 		std::cout << "router : received data from " << ipstr << ":" <<
 		ntohs(get_in_port((struct sockaddr *)&their_addr)) << std::endl;
 
+		// Print number of bytes and data if no buffer overflow	
+		std::cout << "router : " << n_bytes << " received\n";
+		if(n_bytes < BUFFER_SIZE){ buf[n_bytes] = '\0'; std::cout << buf << std::endl; }
+
+		/*
 		char *testing = new char[req.len_msg()];
 		strcpy(testing, req.get_msg());
 		for(int i = 0; i < req.len_msg(); i++){
 			if(testing[i] < 32){ testing[i] = '#'; }
 		}
 		std::cout << "[" << req.len_msg() << "]\n" << testing << std::endl;
+		*/
+
+		// Create message and set byte count
+		char testing[] = {'H','e','l','l','o',' ','E','o','i','n','\0'};
+		n_bytes = 11;
+		std::cout << "data : [" << testing << "]\n";
 				
-		// Create HTTP response
-		HTTP_Response resp;
-
-		if(req.is_error()){ resp.add_header("HTTP/1.0 400 Bad request"); }
-		else{
-			resp.add_header("HTTP/1.0 200 OK");
-			resp.add_header("Content-Encoding: binary");
-			resp.add_header("Content-Type: text/plain");
-		}
-
-		n_bytes = resp.len_msg();
-
-		testing = new char[resp.len_msg()];
-		strcpy(testing, resp.get_msg());
-		for(int i = 0; i < resp.len_msg(); i++){
-			if(testing[i] < 32){ testing[i] = '#'; }
-		}
-		std::cout << testing << std::endl;
-
-		if (send_all(router_fd, resp.get_msg(), &n_bytes, (struct sockaddr *)&their_addr, their_addr_size) == -1) {
+		if (send_all(router_fd, testing, &n_bytes, (struct sockaddr *)&their_addr, their_addr_size) == -1) {
 			perror("send_all");
-			continue;
+			// continue;
+			break;
 		}
+
+		break;
 	}
 	
 	return 0;

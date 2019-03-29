@@ -91,8 +91,6 @@ main(int argc, char *argv[])
 		exit(2);
 	} 
 	
-	// Reap all dead processes here ?
-	
 	// Wait for connections and deal with them
 	while(1){
 
@@ -110,50 +108,44 @@ main(int argc, char *argv[])
 			exit(0);
 		}
 
-		// Reset buffer
-		memset(&buf, 0, sizeof buf);
-		n_bytes = 0;	
+		// Create message and set byte count
+		char testing[] = {'G','o','o','d','b','y','e',' ','A','l','e','x','\0'};
+		n_bytes = 13;
+
+		printf("router : sending test data...\n");
+		std::cout << "data : [" << testing << "]\n";
 		
-		// Create empty HTTP request
-		HTTP_Request req;
-
-		req.add_header("GET localhost/index.html HTTP/1.0");
-
-		n_bytes = req.len_msg();
-
-		char *testing = new char[req.len_msg()];
-		strcpy(testing, req.get_msg());
-		for(int i = 0; i < req.len_msg(); i++){
-			if(testing[i] < 32){ testing[i] = '#'; }
-		}
-		std::cout << testing << std::endl;
-
-		if (send_all(router_fd, req.get_msg(), &n_bytes, (struct sockaddr *)(router_info->ai_addr), router_info->ai_addrlen) == -1) {
+		if (send_all(router_fd, testing, &n_bytes, router_info->ai_addr, router_info->ai_addrlen) == -1) {
 			perror("send_all");
 			continue;
 		}
 
-		printf("router : sending test data...\n");
+		// Reset buffer
+		memset(&buf, 0, sizeof buf);
+		n_bytes = 0;	
+		their_addr_size = sizeof their_addr;
 
-		HTTP_Response resp;
-
-		while(!(resp.append(buf, n_bytes))){
-			n_bytes = recvfrom(router_fd, buf, sizeof buf, 0,
-				           (struct sockaddr *)&their_addr, &their_addr_size);
-			if(n_bytes == -1) { perror("recvfrom"); exit(0); }
-		}
+		n_bytes = recvfrom(router_fd, buf, sizeof buf, 0,
+				   (struct sockaddr *)&their_addr, &their_addr_size);
+		if(n_bytes == -1) { perror("recvfrom"); exit(0); }
 
 		// Print the other router's address and port details
 		inet_ntop(their_addr.ss_family, get_in_addr((struct sockaddr *)&their_addr), ipstr, sizeof ipstr);
 		std::cout << "router : received data from " << ipstr << ":" <<
 		ntohs(get_in_port((struct sockaddr *)&their_addr)) << std::endl;
-		
+
+		// Print number of bytes and data if no buffer overflow	
+		std::cout << "router : " << n_bytes << " received\n";
+		if(n_bytes < BUFFER_SIZE){ buf[n_bytes] = '\0'; std::cout << buf << std::endl; }
+	
+		/*	
 		testing = new char[resp.len_msg()];
 		strcpy(testing, resp.get_msg());
 		for(int i = 0; i < resp.len_msg(); i++){
 			if(testing[i] < 32){ testing[i] = '#'; }
 		}
 		std::cout << testing << std::endl;
+		*/
 
 		break;	
 	}
