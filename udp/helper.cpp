@@ -19,6 +19,7 @@
 #include <sys/types.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <ctime>
 
 void *
 get_in_addr(struct sockaddr *sa)
@@ -49,7 +50,7 @@ get_in_port(struct sockaddr *sa)
 bool
 compare_sockaddr(struct sockaddr *sa_a, struct sockaddr *sa_b)
 {
-	// Check family, port and address (doesn't check other IPv6 stuff)A
+	// Check family, port and address (doesn't check other IPv6 stuff)
 
 	// Compare IP version
 	if(sa_a->sa_family != sa_b->sa_family){ return false; }
@@ -168,4 +169,38 @@ get_address(const char *addr, const char *port)
 	}
 
 	return router_info;
+}
+
+bool
+wait_for_packet(int router_fd, struct timeval *tv)
+{
+	// Create new file descriptor set and add router socket
+	fd_set readfds;
+	FD_ZERO(&readfds);
+	FD_SET(router_fd, &readfds);
+
+	// Wait for incoming data
+	if(select(router_fd + 1, &readfds, NULL, NULL, tv) == -1){
+		perror("select");
+		exit(0);
+	}
+
+	// Check if is data or timeout
+	if(FD_ISSET(router_fd, &readfds)){ return true; }
+	return false;	
+}
+
+void
+countdown_timeval(unsigned long curr_clock, struct timeval *tv)
+{
+	// Get time from clock ticks
+	double time = (double)curr_clock / (double)CLOCKS_PER_SEC;
+	// Extract seconds
+	unsigned long seconds = (unsigned long)time;
+	// Remove integer part and convert to micro-seconds
+	time = (time - seconds) * 1000000;
+	// Save micro-seconds
+	unsigned long useconds = (unsigned long)(time);
+	tv->tv_sec -= (time_t)seconds;
+	tv->tv_usec -= (suseconds_t)useconds;	
 }

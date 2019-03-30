@@ -7,6 +7,9 @@
 #include <iostream>
 #include <string>
 
+#include <sys/types.h>
+#include <netdb.h>
+
 #include "helper.h"
 
 #define DEFAULT_PORT "4000"
@@ -43,12 +46,13 @@ main(int argc, char *argv[])
 
 		printf("router : waiting for connections...\n");
 
+		/*
 		if((n_bytes = recvfrom(router_fd, buf, sizeof buf, 0, (struct sockaddr *)&their_addr, &their_addr_size)) == -1)
 		{ 
 			perror("recvfrom");
 			exit(0); 
 		}
-
+		
 		// Print the other router's address and port details
 		inet_ntop(their_addr.ss_family, get_in_addr((struct sockaddr *)&their_addr), ipstr, sizeof ipstr);
 		std::cout << "router : received data from " << ipstr << ":" <<
@@ -57,6 +61,7 @@ main(int argc, char *argv[])
 		// Print number of bytes and data if no buffer overflow	
 		std::cout << "router : " << n_bytes << " received\n";
 		if(n_bytes < BUFFER_SIZE){ buf[n_bytes] = '\0'; std::cout << buf << std::endl; }
+		*/
 
 		/*
 		char *testing = new char[req.len_msg()];
@@ -66,13 +71,16 @@ main(int argc, char *argv[])
 		}
 		std::cout << "[" << req.len_msg() << "]\n" << testing << std::endl;
 		*/
+		
+		struct addrinfo *temp = get_address("localhost","4000");		
 
 		// Create message and set byte count
 		char testing[] = {'H','e','l','l','o',' ','E','o','i','n','\0'};
 		n_bytes = 11;
 		std::cout << "data : [" << testing << "]\n";
 				
-		if (send_all(router_fd, testing, &n_bytes, (struct sockaddr *)&their_addr, their_addr_size) == -1) {
+		// if (send_all(router_fd, testing, &n_bytes, (struct sockaddr *)&their_addr, their_addr_size) == -1) {
+		if (send_all(router_fd, testing, &n_bytes, temp->ai_addr, temp->ai_addrlen) == -1) {
 			perror("send_all");
 			// continue;
 			break;

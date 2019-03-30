@@ -5,6 +5,9 @@
 
 #include <sys/socket.h>
 
+#define TIMEOUT_SEC 6
+#define TIMEOUT_USEC 500000
+
 void *
 get_in_addr(struct sockaddr *sa);
 
@@ -22,5 +25,11 @@ setup_socket_udp(const char *port);
 
 struct addrinfo *
 get_address(const char *addr, const char *port);
+
+bool
+wait_for_packet(int router_fd, struct timeval *tv);
+
+void
+countdown_timeval(unsigned long curr_clock, struct timeval *tv);
 
 #endif
