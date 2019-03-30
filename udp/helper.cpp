@@ -46,6 +46,42 @@ get_in_port(struct sockaddr *sa)
 	return sa_in6->sin6_port;
 }
 
+bool
+compare_sockaddr(struct sockaddr *sa_a, struct sockaddr *sa_b)
+{
+	// Check family, port and address (doesn't check other IPv6 stuff)A
+
+	// Compare IP version
+	if(sa_a->sa_family != sa_b->sa_family){ return false; }
+	// Compare port number
+	if(get_in_port(sa_a) != get_in_port(sa_b)){ return false; }
+	// Compare IP address for given version
+	switch(sa_a->sa_family){
+		case AF_INET:
+			{
+				struct in_addr *temp_a = (struct in_addr *)get_in_addr(sa_a);
+				struct in_addr *temp_b = (struct in_addr *)get_in_addr(sa_b);
+				if(temp_a->s_addr != temp_b->s_addr){ return false; }
+			}
+			break;
+		case AF_INET6:
+			{
+				struct in6_addr *temp_a = (struct in6_addr *)get_in_addr(sa_a);
+				struct in6_addr *temp_b = (struct in6_addr *)get_in_addr(sa_b);
+				for(int i = 0; i < 16; i++){
+					if((temp_a->s6_addr)[i] != (temp_b->s6_addr)[i]){ return false; }				
+				}
+			}
+			break;
+		default:	
+			perror("router : compare");
+			exit(0);
+	}
+
+	// All checked fields are equal	
+	return true;
+}
+
 int
 send_all(int send_fd, const char *buf, int *len, struct sockaddr *to, socklen_t to_len)
 {

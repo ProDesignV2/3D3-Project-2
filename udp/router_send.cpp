@@ -66,12 +66,12 @@ main(int argc, char *argv[])
 
 		// Print the other router's address and port details
 		inet_ntop(their_addr.ss_family, get_in_addr((struct sockaddr *)&their_addr), ipstr, sizeof ipstr);
-		std::cout << "router : received data from " << ipstr << ":" <<
+		std::cout << "router : received " << n_bytes << " bytes from " << ipstr << ":" <<
 		ntohs(get_in_port((struct sockaddr *)&their_addr)) << std::endl;
 
-		// Print number of bytes and data if no buffer overflow	
-		std::cout << "router : " << n_bytes << " received\n";
-		if(n_bytes < BUFFER_SIZE){ buf[n_bytes] = '\0'; std::cout << buf << std::endl; }
+		// Print data
+		std::cout << buf << std::endl;
+		// if(n_bytes < BUFFER_SIZE){ buf[n_bytes] = '\0'; std::cout << buf << std::endl; }
 	
 		/*	
 		testing = new char[resp.len_msg()];
