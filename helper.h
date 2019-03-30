@@ -5,22 +5,6 @@
 
 #include <sys/socket.h>
 
-enum class Persistent
-{
-	pers,
-	non_pers,
-	pers_serv,
-	unspec
-};
-
-struct URL_Parsed
-{	
-	char *addr;
-	char *port;
-	char *file;
-	Persistent pers;
-};
-
 void *
 get_in_addr(struct sockaddr *sa);
 
@@ -30,7 +14,10 @@ get_in_port(struct sockaddr *sa);
 int
 send_all(int send_fd, const char *buf, int *len, struct sockaddr *to, socklen_t to_len);
 
-URL_Parsed
-parse_url(char *url);
+int
+setup_socket_udp(const char *port);
+
+struct addrinfo *
+get_address(const char *addr, const char *port);
 
 #endif

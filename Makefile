@@ -2,7 +2,7 @@ CXX=g++
 CXXOPTIMIZE= -O2
 CXXFLAGS= -g -Wall -pthread -std=c++11 $(CXXOPTIMIZE)
 USERID=14320042
-CLASSES=httpmsg.cpp helper.cpp
+CLASSES=helper.cpp
 
 all: router router_send
 

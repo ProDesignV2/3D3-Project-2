@@ -2,11 +2,21 @@
 
 #include "helper.h"
 
+#include <sys/types.h>
+#include <sys/fcntl.h>
+#include <sys/unistd.h>
+#include <sys/stat.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <string.h>
+#include <stdio.h>
+#include <errno.h>
+#include <unistd.h>
+#include <netdb.h>
+#include <stdlib.h>
+#include <string>
 #include <netinet/in.h>
 #include <sys/types.h>
-#include <string>
-#include <string.h>
-#include <algorithm>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -55,53 +65,71 @@ send_all(int send_fd, const char *buf, int *len, struct sockaddr *to, socklen_t 
 	return num_bytes == -1 ? -1 : 0;
 }
 
-URL_Parsed
-parse_url(char *url)
+int
+setup_socket_udp(const char *port)
 {
-	// Parse URL into address, port and file path
-	URL_Parsed purl;
-	std::string urlStr(url);
-	size_t addr_pos = 0, port_pos, file_pos, quer_pos, url_len = urlStr.length();
-	size_t addr_len, port_len, file_len;
-	// Check for protocol
-	if(urlStr.find("https://") != std::string::npos ||
-	   urlStr.find("http://")  != std::string::npos   ){ addr_pos = urlStr.find("//") + 2; }
-	// Check for port
-	port_pos = urlStr.find(":", addr_pos);
-	// Check for file
-	file_pos = urlStr.find("/", addr_pos);
-	// Check for query
-	quer_pos = urlStr.find("?", addr_pos);
-	purl.pers = Persistent::unspec;
-	if(quer_pos != std::string::npos){
-		if(urlStr.substr(quer_pos + 1).compare("1") == 0){ purl.pers = Persistent::pers; }
-		else if(urlStr.substr(quer_pos + 1).compare("0") == 0){ purl.pers = Persistent::non_pers; }
-		url_len = quer_pos;
-	}	
-	// Get file length
-	if(file_pos != std::string::npos){	
-		if(port_pos != std::string::npos){
-			addr_len = port_pos - addr_pos;
-			port_len = file_pos - port_pos - 1;
-			if(addr_pos == file_pos){ fprintf(stderr, "url : hostname\n"); exit(0); }
-			if(port_len == 0){ fprintf(stderr, "url : port\n"); exit(0); }
+	struct addrinfo *router_info, *res_point;
+	int router_fd, yes = 1;
+
+	// Get address structs based on host IP and given port
+	router_info = get_address(NULL, port);
+	
+	// Loop through getaddrinfo results for available struct  
+	for(res_point = router_info; res_point != NULL; res_point = res_point->ai_next){
+		
+		// Create a socket for the router using UDP (Datagram)
+		if((router_fd = socket(res_point->ai_family, res_point->ai_socktype, res_point->ai_protocol)) == -1) {
+			perror("router : socket");
+			continue;
+		}		
+
+		// Allow others to reuse the socket
+		if (setsockopt(router_fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) {
+			perror("setsockopt");
+			// Why is this an exit call ?
+			exit(1);
 		}
-		else{
-			addr_len = file_pos - addr_pos;
-			port_len = 0;
-			file_len = url_len - file_pos;
+
+		// Bind host address to socket
+		if (bind(router_fd, res_point->ai_addr, res_point->ai_addrlen) == -1) {
+			close(router_fd);
+			perror("router : bind");
+			continue;
 		}
-		file_len = url_len - file_pos;
-		if(addr_len == 0){ fprintf(stderr, "url : hostname\n"); exit(1); }
+
+		break;
 	}
-	else{ fprintf(stderr, "url : filepath\n"); exit(2); }
-	// Copy parsed URL parts into struct	
-	purl.addr = new char[addr_len + 1];
-	purl.file = new char[file_len + 1];
-	strcpy(purl.addr, urlStr.substr(addr_pos, addr_len).c_str());
-	strcpy(purl.file, urlStr.substr(file_pos, file_len).c_str());
-	if(port_len == 0){ purl.port = NULL; return purl; }
-	purl.port = new char[port_len + 1];
-	strcpy(purl.port, urlStr.substr(port_pos + 1, port_len).c_str());
-	return purl;
+	
+	// Free addrinfo struct
+	freeaddrinfo(router_info);	
+	
+	// If no working address struct is found
+	if(res_point == NULL){
+		fprintf(stderr, "router : failed to bind\n");
+		exit(2);
+	}
+
+	return router_fd; 
+}
+
+struct addrinfo *
+get_address(const char *addr, const char *port)
+{	
+	struct addrinfo hints, *router_info;
+	int gai_result;
+
+	// Set parameters for address structs
+	memset(&hints, 0, sizeof hints);
+	hints.ai_family = AF_UNSPEC;
+	hints.ai_socktype = SOCK_DGRAM;
+	hints.ai_flags = AI_PASSIVE;
+
+	// Get available address structs based on host IP
+	if((gai_result = getaddrinfo(addr, port, &hints, &router_info)) != 0)
+	{
+		fprintf(stderr, "getaddrinfo : %s\n", gai_strerror(gai_result));
+		exit(0);
+	}
+
+	return router_info;
 }
