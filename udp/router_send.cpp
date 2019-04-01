@@ -27,15 +27,23 @@ main(int argc, char *argv[])
 	std::string router_port = DEFAULT_PORT;
 	timeval tv;
 
+	
+	
+	//Modified argument parser goes here
+	
+	
 	// Set command argument as router port if entered
-	switch(argc){ 
-		case 1: break;
-		case 2: router_port = argv[1]; break;
-		default:		
-			fprintf(stderr, "usage: ./router [port]\n"); 
-			exit(0); 
-	}
+	//switch(argc){ 
+	//	case 1: break;
+	//	case 2: router_port = argv[1]; break;
+	//	default:		
+	//		fprintf(stderr, "usage: ./router [port]\n"); 
+	//		exit(0); 
+	//}
 
+	
+	
+	
 	// Setup up UDP socket at given port
 	router_fd = setup_socket_udp(router_port.c_str());	
 

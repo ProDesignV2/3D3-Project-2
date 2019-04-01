@@ -1,0 +1,124 @@
+    //In the braces below is code that will setup a port with a known node name argument by reading the topology file,
+    //it creates a table with Nodes and their ports, it will also take in a new node and assign it the inputted port 
+    //(some functionality needs to be added to this to deal with Bellman ford)
+    {
+        //nodeAndPort is a table with the node name and their port
+        std::string nodeAndPort[8][2] = {{"A", ""},
+                                         {"B", ""},
+                                         {"C", ""},
+                                         {"D", ""},
+                                         {"E", ""},
+                                         {"F", ""},
+                                         {"",  ""},
+                                         {"",  ""}};
+        //fileName is the name of the topology file and topFile is the accessible instantiation of the file
+        std::string fileName = "FileTopology.rtf";
+        std::fstream topFile;
+
+
+
+        //Check if topology file is present and open it
+        topFile.open(fileName, std::ios_base::in);
+        if (!topFile.is_open()) {
+            perror("fstream : file won't open");
+            exit(1);
+        }
+
+
+        //Convert the topology file into ports and their node names (A 10000, B 10001, ...) and add to the name/port table
+        std::string topologyString = "";
+        while (topFile.good()) {
+            getline(topFile, topologyString);
+            if (topologyString.size() > 0) {
+                switch (topologyString[2]) {
+                    case 'A' :
+                        nodeAndPort[0][1] = topologyString.substr(4, 5);
+                        break;
+                    case 'B' :
+                        nodeAndPort[1][1] = topologyString.substr(4, 5);
+                        break;
+                    case 'C' :
+                        nodeAndPort[2][1] = topologyString.substr(4, 5);
+                        break;
+                    case 'D' :
+                        nodeAndPort[3][1] = topologyString.substr(4, 5);
+                        break;
+                    case 'E' :
+                        nodeAndPort[4][1] = topologyString.substr(4, 5);
+                        break;
+                    case 'F' :
+                        nodeAndPort[5][1] = topologyString.substr(4, 5);
+                        break;
+                    default :
+                        perror("Non standard file input");
+                        exit(2);
+                }
+            }
+        }
+
+
+
+        //Check if arg[1] == A/B/.../F if so
+        //Set command argument as router port if entered
+
+        switch (argc) {
+
+            //Need to implement randomising a known port and checking if that port is free
+            case 1:
+                break;
+
+                //Checks node name argument and sets the port accordingly
+            case 2: {
+                char *nodeName = argv[1];
+                switch (*nodeName) {
+                    case 'A' : {
+                        router_port = nodeAndPort[0][1];
+                        char thing = '2';
+                        break;
+                    }
+                    case 'B' :
+                        router_port = nodeAndPort[1][1];
+                        break;
+                    case 'C' :
+                        router_port = nodeAndPort[2][1];
+                        break;
+                    case 'D' :
+                        router_port = nodeAndPort[3][1];
+                        break;
+                    case 'E' :
+                        router_port = nodeAndPort[4][1];
+                        break;
+                    case 'F' :
+                        router_port = nodeAndPort[5][1];
+                        break;
+                    default :
+                        perror("Unknown node requested");
+                        exit(1);
+                }
+                break;
+            }
+
+                //7 inputs = New node
+            case 7 : {
+
+                //New node inputted
+                //Message structure for new Node:
+                //"<Name> <Port> <Neighbour 1 Name> <Neighbour 1 Cost> <Neighbour 2 Name> <Neighbour 2 Cost>"
+
+                //4 lines below set up name and port & add to array
+                //char *newNode = argv[1];
+                nodeAndPort[6][0] = argv[1];
+                //std::string newPort = argv[2];
+                nodeAndPort[6][1] = argv[2];
+
+                //This information from the new node needs to be integrated into the tables
+                break;
+            }
+
+            default:
+                fprintf(stderr, "usage: ./router [port]\n");
+                exit(0);
+        }
+
+    }
+    
