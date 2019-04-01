@@ -30,6 +30,7 @@ int main(){
 	hints.ai_socktype = SOCK_DGRAM;
 	hints.ai_flags = AI_PASSIVE;
 	getaddrinfo(NULL,"9999",&hints,&res);
+	printf("socklen_t : [%u]\n",res->ai_addrlen);
 	int sockfd = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
 	bind(sockfd,res->ai_addr,res->ai_addrlen);
 	freeaddrinfo(res);
@@ -44,6 +45,7 @@ int main(){
 		tv.tv_usec = 0;
 		printf("Select-ing... [%d]\n",count++);
 		select(sockfd+1,&readfds,NULL,NULL,&tv);
+		printf("Timeout : %lu sec %lu usec\n",tv.tv_sec,tv.tv_usec);
 		if(!FD_ISSET(sockfd,&readfds)){ continue; }
 		memset(buf,0,BUF_SIZE);
 		n_bytes = 0;

@@ -10,7 +10,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <ctime>
 #include <unistd.h>
 
 #include "helper.h"
@@ -26,8 +25,7 @@ main(int argc, char *argv[])
 	socklen_t their_addr_size;
 	char ipstr[INET6_ADDRSTRLEN], buf[BUFFER_SIZE];
 	std::string router_port = DEFAULT_PORT;
-	std::clock_t timer;
-	timeval tv, tv_copy;
+	timeval tv;
 
 	// Set command argument as router port if entered
 	switch(argc){ 
@@ -42,12 +40,12 @@ main(int argc, char *argv[])
 	router_fd = setup_socket_udp(router_port.c_str());	
 
 	// Create empty vector for sockaddr structs
-	std::vector<struct addrinfo *> other_routers;
+	std::vector<struct sockaddr *> other_routers;
 
 	// Create and add some sample router structs
-	other_routers.push_back(get_address("localhost","6000"));
-	other_routers.push_back(get_address("localhost","7000"));
-	other_routers.push_back(get_address("localhost","8000"));
+	other_routers.push_back(get_address("localhost","5000")->ai_addr);
+	other_routers.push_back(get_address("localhost","6000")->ai_addr);
+	other_routers.push_back(get_address("localhost","7000")->ai_addr);
 	
 	// Wait for connections and deal with them
 	while(1){
@@ -60,22 +58,21 @@ main(int argc, char *argv[])
 		std::cout << "data : [" << testing << "]\n";
 		
 		for(auto router : other_routers){
-			if (send_all(router_fd, testing, &n_bytes, router->ai_addr, router->ai_addrlen) == -1) {
+			their_addr_size = sizeof their_addr;
+			if (send_all(router_fd, testing, &n_bytes, router, their_addr_size) == -1) {
 				perror("send_all");
 				continue;
 			}
 		}
 
-		// Start timer for receiving data
-		timer = std::clock();
+		// Reset timeout for receiving data
 		tv.tv_sec = TIMEOUT_SEC;
 		tv.tv_usec = TIMEOUT_USEC;
 		
 		do
 		{
 			// Break and go to send routine if false (timeout)	
-			tv_copy = tv;
-			if(!wait_for_packet(router_fd, &tv_copy)){ break; }
+			if(!wait_for_packet(router_fd, &tv)){ break; }
 
 
 			// Read in available data from buffer and do stuff
@@ -96,13 +93,9 @@ main(int argc, char *argv[])
 
 			// Print data
 			std::cout << buf << std::endl;
-
-			// Finish "stuff"
-
-
-			// Subtract time elapsed from timeval struct
-			countdown_timeval((std::clock() - timer), &tv);
-			timer = std::clock();
+		
+			// Check if new router, and add to list	
+			add_new_addr((struct sockaddr *)&their_addr, other_routers);
 		}
 		while((tv.tv_sec > 0) && (tv.tv_usec > 0));
 

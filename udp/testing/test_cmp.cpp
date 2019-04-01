@@ -10,6 +10,7 @@ int main(){
 	// Create variables to be tested
 	struct addrinfo *test1 = get_address("2241:dc8::0:2","4567");
 	struct addrinfo *test2 = get_address("2241:dc8::0:2","4567");
+	printf("socklen_t : [%u]", test1->ai_addrlen);
 	/*
 	struct addrinfo *test3 = get_address("127.0.0.1","4567");
 	struct addrinfo *test4 = get_address("127.0.0.1","4567");

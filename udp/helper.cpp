@@ -20,6 +20,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctime>
+#include <vector>
+
+#include <iostream>
 
 void *
 get_in_addr(struct sockaddr *sa)
@@ -81,6 +84,33 @@ compare_sockaddr(struct sockaddr *sa_a, struct sockaddr *sa_b)
 
 	// All checked fields are equal	
 	return true;
+}
+
+bool
+add_new_addr(struct sockaddr *sa, std::vector<struct sockaddr *> &sa_list)
+{
+	// Flag for checking if sockaddr is in list
+	bool inList = false;
+
+	// Check if new sockaddr
+	for(auto address : sa_list){
+		// If sockaddr already in list, break checking loop
+		if(compare_sockaddr(address, sa)){ inList = true; break; }
+	}
+
+	// Add sockaddr to list if new
+	if(!inList){ 
+		// Create new pointer and copy sockaddr struct over
+		struct sockaddr *copy_addr = new struct sockaddr;	
+		*copy_addr = *sa;
+		// Add copied struct to list
+		sa_list.push_back(copy_addr);
+		// Return that new sockaddr was added 
+		return true;
+	}
+
+	// No new sockaddr was added
+	return false;
 }
 
 int
@@ -178,7 +208,7 @@ wait_for_packet(int router_fd, struct timeval *tv)
 	fd_set readfds;
 	FD_ZERO(&readfds);
 	FD_SET(router_fd, &readfds);
-
+	
 	// Wait for incoming data
 	if(select(router_fd + 1, &readfds, NULL, NULL, tv) == -1){
 		perror("select");
@@ -191,7 +221,7 @@ wait_for_packet(int router_fd, struct timeval *tv)
 }
 
 void
-countdown_timeval(unsigned long curr_clock, struct timeval *tv)
+countdown_timeval(std::clock_t curr_clock, struct timeval *tv)
 {
 	// Get time from clock ticks
 	double time = (double)curr_clock / (double)CLOCKS_PER_SEC;
