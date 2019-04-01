@@ -4,7 +4,7 @@ CXXFLAGS= -g -Wall -pthread -std=c++11 $(CXXOPTIMIZE)
 USERID=14320042
 CLASSES=helper.cpp
 
-all: router router_send
+all: router
 
 router: $(CLASSES)
 	$(CXX) -o $@ $^ $(CXXFLAGS) $@.cpp

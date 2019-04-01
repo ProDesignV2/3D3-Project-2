@@ -1,14 +1,16 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#include <sys/types.h>
+#include <sys/time.h>
+#include <netdb.h>
 #include <string.h>
 #include <stdio.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <iostream>
 #include <string>
-
-#include <sys/types.h>
-#include <netdb.h>
+#include <vector>
+#include <unistd.h>
 
 #include "helper.h"
 
@@ -23,6 +25,7 @@ main(int argc, char *argv[])
 	socklen_t their_addr_size;
 	char ipstr[INET6_ADDRSTRLEN], buf[BUFFER_SIZE];
 	std::string router_port = DEFAULT_PORT;
+	timeval tv;
 
 	
 	
@@ -38,62 +41,80 @@ main(int argc, char *argv[])
 	//		exit(0); 
 	//}
 
-
-
+	
+	
+	
 	// Setup up UDP socket at given port
-	router_fd = setup_socket_udp(router_port.c_str());	
+	router_fd = setup_socket_udp(argv[1]);	
+	// router_fd = setup_socket_udp(router_port.c_str());	
+
+	// Create empty vector for sockaddr structs
+	std::vector<struct sockaddr *> other_routers;
+
+	// Add routers specified in command line
+	for(int port_arg = 2; port_arg < argc; port_arg++){
+		other_routers.push_back(get_address("localhost", argv[port_arg])->ai_addr);
+	}
 	
 	// Wait for connections and deal with them
 	while(1){
+	
+		if(!other_routers.empty()){
 
-		// Reset buffer
-		memset(&buf, 0, sizeof buf);
-		n_bytes = 0;	
-		their_addr_size = sizeof their_addr;
+			// Create message and set byte count
+			memset(&buf, 0, sizeof buf);
+			sprintf(buf, "I am a router, located at port %s", argv[1]);
+			n_bytes = strlen(buf);
 
-		printf("router : waiting for connections...\n");
-
-		/*
-		if((n_bytes = recvfrom(router_fd, buf, sizeof buf, 0, (struct sockaddr *)&their_addr, &their_addr_size)) == -1)
-		{ 
-			perror("recvfrom");
-			exit(0); 
-		}
-		
-		// Print the other router's address and port details
-		inet_ntop(their_addr.ss_family, get_in_addr((struct sockaddr *)&their_addr), ipstr, sizeof ipstr);
-		std::cout << "router : received data from " << ipstr << ":" <<
-		ntohs(get_in_port((struct sockaddr *)&their_addr)) << std::endl;
-
-		// Print number of bytes and data if no buffer overflow	
-		std::cout << "router : " << n_bytes << " received\n";
-		if(n_bytes < BUFFER_SIZE){ buf[n_bytes] = '\0'; std::cout << buf << std::endl; }
-		*/
-
-		/*
-		char *testing = new char[req.len_msg()];
-		strcpy(testing, req.get_msg());
-		for(int i = 0; i < req.len_msg(); i++){
-			if(testing[i] < 32){ testing[i] = '#'; }
-		}
-		std::cout << "[" << req.len_msg() << "]\n" << testing << std::endl;
-		*/
-		
-		struct addrinfo *temp = get_address("localhost","4000");		
-
-		// Create message and set byte count
-		char testing[] = {'H','e','l','l','o',' ','E','o','i','n','\0'};
-		n_bytes = 11;
-		std::cout << "data : [" << testing << "]\n";
+			printf("\nMessage [%dB]: %s\nRouter [%s] Sending to...\n\n", n_bytes, buf, argv[1]);
+			
+			for(auto router : other_routers){
 				
-		// if (send_all(router_fd, testing, &n_bytes, (struct sockaddr *)&their_addr, their_addr_size) == -1) {
-		if (send_all(router_fd, testing, &n_bytes, temp->ai_addr, temp->ai_addrlen) == -1) {
-			perror("send_all");
-			// continue;
-			break;
+				// Print the other router's address and port details
+				inet_ntop(router->sa_family, get_in_addr(router), ipstr, sizeof ipstr);
+				std::cout << ipstr << ":" << ntohs(get_in_port(router)) << std::endl;
+
+				their_addr_size = sizeof their_addr;
+				if (send_all(router_fd, buf, &n_bytes, router, their_addr_size) == -1) {
+					perror("send_all");
+					continue;
+				}
+			}
 		}
 
-		break;
+		// Reset timeout for receiving data
+		tv.tv_sec = TIMEOUT_SEC;
+		tv.tv_usec = TIMEOUT_USEC;
+		
+		printf("\nRouter [%s]\nReceiving from...\n\n", argv[1]);
+
+		do
+		{
+			// Break and go to send routine if false (timeout)	
+			if(!wait_for_packet(router_fd, &tv)){ break; }
+
+
+			// Read in available data from buffer and do stuff
+
+			// Reset buffer
+			memset(&buf, 0, sizeof buf);
+			n_bytes = 0;	
+			their_addr_size = sizeof their_addr;
+
+			n_bytes = recvfrom(router_fd, buf, sizeof buf, 0,
+					   (struct sockaddr *)&their_addr, &their_addr_size);
+			if(n_bytes == -1) { perror("recvfrom"); exit(0); }
+
+			// Print the other router's address and port details
+			inet_ntop(their_addr.ss_family, get_in_addr((struct sockaddr *)&their_addr), ipstr, sizeof ipstr);
+			std::cout << ipstr << ":" << ntohs(get_in_port((struct sockaddr *)&their_addr)) <<
+			" [" << n_bytes << "B] " << buf << std::endl; 
+		
+			// Check if new router, and add to list	
+			add_new_addr((struct sockaddr *)&their_addr, other_routers);
+		}
+		while((tv.tv_sec > 0) && (tv.tv_usec > 0));
+
 	}
 	
 	return 0;
