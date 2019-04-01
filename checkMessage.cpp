@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <errno.h>
 #include <unistd.h>
+#include <ctime>
+#include <chrono>
 
 #include <iostream>
 #include <sstream>
@@ -115,4 +117,59 @@ string checkMessage::confNodesFromMessage(string message){
     
     output = array; //copies char arry to a string
     return output;
+}
+
+string checkMessage::createConfirm(){
+    string out = "confirm\n";
+}
+
+string checkMessage::probeMessage(string type1, char curr){
+    string out = "probe\n";
+    out+= to_string(curr);
+    return out;
+}
+
+int checkMessage::isThere(string nodes, char pres){
+    int size = nodes.size();
+	int out = -1;
+	for(int i = 0; i < size; i++){
+		if(nodes.at(i) == pres){
+			out = 1;
+		}
+	}
+	return out;
+}
+
+void checkMessage::dataMessagePrint(string input){
+    int i = 0;
+
+	cout << "Type: ";
+	while(input.at(i) != *"\n"){
+		cout << input;
+		i++;
+	}
+	cout << "\n";
+
+	cout << "Time: ";
+	while(input.at(i) != *"\n"){
+		cout << input;
+		i++;
+	}
+	cout << "\n";
+
+	cout << "Source: ";
+
+	while(input.at(i) != *"\n"){
+		cout << input;
+		i++;
+	}
+	cout << "\n";
+	
+	cout << "Destination: ";
+
+	while(input.at(i) != *"\n"){
+		cout << input;
+		i++;
+	}
+	cout << "\n";
 }

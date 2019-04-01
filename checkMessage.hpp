@@ -34,13 +34,16 @@ class checkMessage{
         int getNodeNum();
         string getConfNodes();
         //creates the message as a string, in order to be sent from socket
+        string probeMessage(string type1, char curr);
         string createMessage(string type1, int nodeNum1, string confNodes1);
         //parses the string received into the values needed.
         string typeFromMessage(string message); //takes the string input and returns the type.
         int nodeNumFromMessage(string message); //takes the string input and returns the # of nodes.
         string confNodesFromMessage(string message); //takes the string input and returns the # of conf nodes.
         //function below will create a confirmation message that is sent to all nodes
-        //string createConfirmMessage();
+        string createConfirm(); //message sent when all nodes are updated;
+        int isThere(string nodes, char pres);
+        void dataMessagePrint(string input);
     private:
          string type; //this used to  indicate it is a check message
         int nodeNum; //number of nodes
