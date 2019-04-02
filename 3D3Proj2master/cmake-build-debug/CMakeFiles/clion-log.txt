@@ -1,0 +1,4 @@
+/home/senan/clion-2018.3.4/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/senan/CLionProjects/3D3Proj2master
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/senan/CLionProjects/3D3Proj2master/cmake-build-debug
