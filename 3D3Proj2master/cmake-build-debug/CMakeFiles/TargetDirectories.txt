@@ -1,0 +1,3 @@
+/home/senan/CLionProjects/3D3Proj2master/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/senan/CLionProjects/3D3Proj2master/cmake-build-debug/CMakeFiles/3D3Proj2master.dir
+/home/senan/CLionProjects/3D3Proj2master/cmake-build-debug/CMakeFiles/edit_cache.dir
