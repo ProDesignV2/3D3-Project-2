@@ -31,22 +31,25 @@ main(int argc, char *argv[])
     // Create empty vector for sockaddr structs
     std::vector<struct sockaddr *> other_routers;
 
-	
+
 
 
     //In the braces below is code that will setup a port with a known node name argument by reading the topology file,
-    //it creates a table with Nodes and their ports, it will also take in a new node and assign it the inputted port
-    //(some functionality needs to be added to this to deal with Bellman ford)
+    //it creates a table with Nodes and their ports, it will create a new node & assign it the inputted port and neighbours
+    //(some functionality needs to be added to this to add Bellman Ford link costs)
     {
+        const int nodeAmount = 8, infoAmount = 14;
+
         //nodeAndPort is a table with the node name and their port and their neighbours
-        std::string nodeAndPort[8][8] = {{"A", "", "", "", "", "", "", ""},
-                                         {"B", "", "", "", "", "", "", ""},
-                                         {"C", "", "", "", "", "", "", ""},
-                                         {"D", "", "", "", "", "", "", ""},
-                                         {"E", "", "", "", "", "", "", ""},
-                                         {"F", "", "", "", "", "", "", ""},
-                                         {"",  "", "", "", "", "", "", ""},
-                                         {"",  "", "", "", "", "", "", ""}};
+        std::string nodeAndPort[nodeAmount][infoAmount] =
+                                        {{"A", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+                                         {"B", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+                                         {"C", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+                                         {"D", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+                                         {"E", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+                                         {"F", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+                                         {"",  "", "", "", "", "", "", "", "", "", "", "", "", ""},
+                                         {"",  "", "", "", "", "", "", "", "", "", "", "", "", ""}};
         //fileName is the name of the topology file and topFile is the accessible instantiation of the file
         std::string fileName = "FileTopology";
         std::fstream topFile;
@@ -89,12 +92,14 @@ main(int argc, char *argv[])
                         perror("Non standard file input");
                         exit(2);
                 }
-                //Sets up node neighbours
+                //Sets up node neighbours and costs to them from file
                 for(int checkNeighbours = 0 ; checkNeighbours < 6 ; checkNeighbours ++){
                     if(nodeAndPort[checkNeighbours][0][0] == topologyString[0]){
-                        for(int numNeigbours = 2 ; numNeigbours < 6 ; numNeigbours++){
+                        for(int numNeigbours = 2 ; numNeigbours < 10 ; numNeigbours++){
                             if(nodeAndPort[checkNeighbours][numNeigbours] == ""){
                                 nodeAndPort[checkNeighbours][numNeigbours] = topologyString[2];
+                                numNeigbours++;
+                                nodeAndPort[checkNeighbours][numNeigbours] = topologyString[10];
                                 break;
                             }
                         }
@@ -146,14 +151,14 @@ main(int argc, char *argv[])
                 router_fd = setup_socket_udp(router_port.c_str());
 
                 //Connects node to neighbours
-                for(int addNeighbours = 0 ; addNeighbours < 6 ; addNeighbours ++){
+                for(int addNeighbours = 0 ; addNeighbours < nodeAmount ; addNeighbours ++){
                     if(nodeName == nodeAndPort[addNeighbours][0]){
-                        for(int neighbour = 2 ; neighbour < 6 ; neighbour ++){
-                            if(nodeAndPort[addNeighbours][neighbour] != ""){
-                                for(int neighbourPort = 0 ; neighbourPort < 6 ; neighbourPort ++) {
+                        for(int neighbour = 2 ; neighbour < infoAmount ; neighbour++){
+                            if(nodeAndPort[addNeighbours][neighbour] != "" && neighbour % 2 == 0){
+                                for(int neighbourPort = 0 ; neighbourPort < infoAmount ; neighbourPort ++) {
                                     if(nodeAndPort[addNeighbours][neighbour] == nodeAndPort[neighbourPort][0]) {
                                         other_routers.push_back(get_address("localhost",
-                                                                            nodeAndPort[neighbourPort][1].c_str())->ai_addr);
+                                                nodeAndPort[neighbourPort][1].c_str())->ai_addr);
                                     }
                                 }
                             }
@@ -170,16 +175,16 @@ main(int argc, char *argv[])
                 //"<Name> <Port> <Neighbour 1 Name> <Neighbour 1 Cost> <Neighbour 2 Name> <Neighbour 2 Cost>"
 
 
-                nodeAndPort[6][0] = argv[1];    //Node Name
-                nodeAndPort[6][1] = argv[2];    //Port
-                nodeAndPort[6][2] = argv[3];    //Neighbour 1
-                nodeAndPort[6][3] = argv[5];    //Neighbour 2
+                for (int newAssign = 0 ; newAssign < 6 ; newAssign++){
+                    nodeAndPort[6][newAssign] = argv[newAssign+1];
+                }
+
 
                 router_port = argv[2];
                 router_fd = setup_socket_udp(router_port.c_str());
 
-                for(int newNeighbour = 0 ; newNeighbour < 8 ; newNeighbour ++){
-                    if(nodeAndPort[newNeighbour][0] == nodeAndPort[6][2] || nodeAndPort[newNeighbour][0] == nodeAndPort[6][3]){
+                for(int newNeighbour = 0 ; newNeighbour < nodeAmount ; newNeighbour ++){
+                    if(nodeAndPort[newNeighbour][0] == nodeAndPort[6][2] || nodeAndPort[newNeighbour][0] == nodeAndPort[6][4]){
                         other_routers.push_back(get_address("localhost",
                                                             nodeAndPort[newNeighbour][1].c_str())->ai_addr);
                     }

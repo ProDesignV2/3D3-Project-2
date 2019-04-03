@@ -150,6 +150,33 @@ helper.cpp.s:
 	$(MAKE) -f CMakeFiles/3D3Proj2master.dir/build.make CMakeFiles/3D3Proj2master.dir/helper.cpp.s
 .PHONY : helper.cpp.s
 
+message.o: message.cpp.o
+
+.PHONY : message.o
+
+# target to build an object file
+message.cpp.o:
+	$(MAKE) -f CMakeFiles/3D3Proj2master.dir/build.make CMakeFiles/3D3Proj2master.dir/message.cpp.o
+.PHONY : message.cpp.o
+
+message.i: message.cpp.i
+
+.PHONY : message.i
+
+# target to preprocess a source file
+message.cpp.i:
+	$(MAKE) -f CMakeFiles/3D3Proj2master.dir/build.make CMakeFiles/3D3Proj2master.dir/message.cpp.i
+.PHONY : message.cpp.i
+
+message.s: message.cpp.s
+
+.PHONY : message.s
+
+# target to generate assembly for a file
+message.cpp.s:
+	$(MAKE) -f CMakeFiles/3D3Proj2master.dir/build.make CMakeFiles/3D3Proj2master.dir/message.cpp.s
+.PHONY : message.cpp.s
+
 router.o: router.cpp.o
 
 .PHONY : router.o
@@ -189,6 +216,9 @@ help:
 	@echo "... helper.o"
 	@echo "... helper.i"
 	@echo "... helper.s"
+	@echo "... message.o"
+	@echo "... message.i"
+	@echo "... message.s"
 	@echo "... router.o"
 	@echo "... router.i"
 	@echo "... router.s"

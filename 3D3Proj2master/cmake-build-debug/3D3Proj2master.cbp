@@ -84,13 +84,19 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/senan/CLionProjects/3D3Proj2master/cmake-build-debug/FileTopology">
+		<Unit filename="/home/senan/CLionProjects/3D3Proj2master/FileTopology">
 			<Option target="3D3Proj2master"/>
 		</Unit>
 		<Unit filename="/home/senan/CLionProjects/3D3Proj2master/helper.cpp">
 			<Option target="3D3Proj2master"/>
 		</Unit>
 		<Unit filename="/home/senan/CLionProjects/3D3Proj2master/helper.h">
+			<Option target="3D3Proj2master"/>
+		</Unit>
+		<Unit filename="/home/senan/CLionProjects/3D3Proj2master/message.cpp">
+			<Option target="3D3Proj2master"/>
+		</Unit>
+		<Unit filename="/home/senan/CLionProjects/3D3Proj2master/message.hpp">
 			<Option target="3D3Proj2master"/>
 		</Unit>
 		<Unit filename="/home/senan/CLionProjects/3D3Proj2master/router.cpp">

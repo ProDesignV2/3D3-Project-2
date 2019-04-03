@@ -4,6 +4,9 @@
 CMakeFiles/3D3Proj2master.dir/helper.cpp.o: ../helper.cpp
 CMakeFiles/3D3Proj2master.dir/helper.cpp.o: ../helper.h
 
+CMakeFiles/3D3Proj2master.dir/message.cpp.o: ../message.cpp
+CMakeFiles/3D3Proj2master.dir/message.cpp.o: ../message.hpp
+
 CMakeFiles/3D3Proj2master.dir/router.cpp.o: ../helper.h
 CMakeFiles/3D3Proj2master.dir/router.cpp.o: ../router.cpp
 
