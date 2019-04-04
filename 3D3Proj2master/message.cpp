@@ -31,7 +31,9 @@ string message::createDataHeader(char *source, char *dest, int rport, int sport,
     return out;
 }
 
-string message::createControlHeader(char *source, int array[], int size){
+string message::createControlHeader(char *source, string array[], int size){
+    //Needed to alter to deal with string inputs
+    /*
     int i = 0;
     string out = "Control\n";
     out.append(source);
@@ -40,6 +42,41 @@ string message::createControlHeader(char *source, int array[], int size){
         out += to_string(array[i]);
     }
     out += "\n";
+    return out;*/
+
+    //Gets timestamp HH:MM:SS\n
+    string timeOfDay;
+    /*tm timestamp;
+    timeOfDay = to_string(timestamp.tm_hour);
+    timeOfDay += ":";
+    timeOfDay += to_string(timestamp.tm_min);
+    timeOfDay += ":";
+    timeOfDay += to_string(timestamp.tm_sec);
+    timeOfDay += "\n";*/
+    time_t current_time = time(0);
+    timeOfDay = ctime(&current_time);
+
+    int pos = timeOfDay.find(" ");
+    timeOfDay = timeOfDay.substr(pos+1);
+    pos = timeOfDay.find(" ");
+    timeOfDay = timeOfDay.substr(pos+1);
+    pos = timeOfDay.find(" ");
+    timeOfDay = timeOfDay.substr(pos+1);
+    pos = timeOfDay.find(" ");
+    timeOfDay = timeOfDay.substr(pos+1, 8);
+
+    string out = "Control\n";
+    out.append(timeOfDay);
+    for (int i = 2 ; i < size ; i ++){
+        if(array[i] != "" ){
+            out.append(source);
+            out.append(array[i]);
+            i++;
+            out.append(array[i]);
+        }
+    }
+
+
     return out;
 }
 

@@ -14,6 +14,7 @@
 #include <fstream>
 
 #include "helper.h"
+#include "message.hpp"
 
 #define DEFAULT_PORT "4000"
 #define BUFFER_SIZE 1024
@@ -32,15 +33,21 @@ main(int argc, char *argv[])
     std::vector<struct sockaddr *> other_routers;
 
 
+    message DistanceVector;
+
+
 
 
     //In the braces below is code that will setup a port with a known node name argument by reading the topology file,
     //it creates a table with Nodes and their ports, it will create a new node & assign it the inputted port and neighbours
     //(some functionality needs to be added to this to add Bellman Ford link costs)
-    {
+
         const int nodeAmount = 8, infoAmount = 14;
 
         //nodeAndPort is a table with the node name and their port and their neighbours
+
+        //<name, port, neighbour1 name, neighbour1 cost,..,neighbour6 name, neighbour6 cost>
+
         std::string nodeAndPort[nodeAmount][infoAmount] =
                                         {{"A", "", "", "", "", "", "", "", "", "", "", "", "", ""},
                                          {"B", "", "", "", "", "", "", "", "", "", "", "", "", ""},
@@ -148,6 +155,7 @@ main(int argc, char *argv[])
                         perror("Unknown node requested");
                         exit(1);
                 }
+
                 router_fd = setup_socket_udp(router_port.c_str());
 
                 //Connects node to neighbours
@@ -163,6 +171,8 @@ main(int argc, char *argv[])
                                 }
                             }
                         }
+                        strcpy(buf,(DistanceVector.createControlHeader(nodeName, nodeAndPort[addNeighbours], infoAmount)).c_str());
+                        break;
                     }
                 }
                 break;
@@ -195,8 +205,6 @@ main(int argc, char *argv[])
                 fprintf(stderr, "usage: ./router [port]\n");
                 exit(0);
         }
-    }
-
 
 
 
@@ -206,9 +214,17 @@ main(int argc, char *argv[])
 	
 		if(!other_routers.empty()){
 
+		    //Send cycle
+
+		    //Send to all neighbours
+            //Set up message in switch statement?..
+            //Send to all as long as normal
+            //Get data sending mode (Graham) - convergence
+
+
 			// Create message and set byte count
 			memset(&buf, 0, sizeof buf);
-			sprintf(buf, "I am a router, located at port %s", argv[1]);
+			//sprintf(buf, "I am a router, located at port %s", argv[1]);
 			n_bytes = strlen(buf);
 
 			printf("\nMessage [%dB]: %s\nRouter [%s] Sending to...\n\n", n_bytes, buf, argv[1]);
@@ -219,6 +235,7 @@ main(int argc, char *argv[])
 				inet_ntop(router->sa_family, get_in_addr(router), ipstr, sizeof ipstr);
 				std::cout << ipstr << ":" << ntohs(get_in_port(router)) << std::endl;
 
+				//Send message (from buf) to all in mailing list (Neighbours)
 				their_addr_size = sizeof their_addr;
 				if (send_all(router_fd, buf, &n_bytes, router, their_addr_size) == -1) {
 					perror("send_all");
@@ -239,28 +256,37 @@ main(int argc, char *argv[])
 			if(!wait_for_packet(router_fd, &tv)){ break; }
 
 
-			// Read in available data from buffer and do stuff
+            // Reset buffer
+            memset(&buf, 0, sizeof buf);
+            n_bytes = 0;
+            their_addr_size = sizeof their_addr;
 
-			// Reset buffer
-			memset(&buf, 0, sizeof buf);
-			n_bytes = 0;	
-			their_addr_size = sizeof their_addr;
-
+            // Read in available data from buffer and do stuff
 			n_bytes = recvfrom(router_fd, buf, sizeof buf, 0,
 					   (struct sockaddr *)&their_addr, &their_addr_size);
 			if(n_bytes == -1) { perror("recvfrom"); exit(0); }
 
+
+
+			//Add parsing of data and Update 2D array
+			//Pass to Bellman Ford algorithm
+			//For testing can add if(oldCost > newCost) = change 2D array
+
+            //Remember file I/O
+
+
+
 			// Print the other router's address and port details
-			inet_ntop(their_addr.ss_family, get_in_addr((struct sockaddr *)&their_addr), ipstr, sizeof ipstr);
-			std::cout << ipstr << ":" << ntohs(get_in_port((struct sockaddr *)&their_addr)) <<
-			" [" << n_bytes << "B] " << buf << std::endl; 
+			//inet_ntop(their_addr.ss_family, get_in_addr((struct sockaddr *)&their_addr), ipstr, sizeof ipstr);
+			//std::cout << ipstr << ":" << ntohs(get_in_port((struct sockaddr *)&their_addr)) <<
+			//" [" << n_bytes << "B] " << buf << std::endl;
 		
 			// Check if new router, and add to list	
 			add_new_addr((struct sockaddr *)&their_addr, other_routers);
 		}
 		while((tv.tv_sec > 0) && (tv.tv_usec > 0));
 
+
 	}
-	
 	return 0;
 }

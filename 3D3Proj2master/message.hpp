@@ -5,7 +5,7 @@
 #include <ctime>
 #include <string>
 
-#define NUM 10
+#define NUM 14
 
 using namespace std;
 
@@ -17,7 +17,7 @@ class message{
         message();
         //message creation
         string createDataHeader(char *source, char *dest, int rport, int sport, string data); //receive port and send port
-        string createControlHeader(char *source, int array[NUM], int size); //type of message, number of connections, string of node names
+        string createControlHeader(char *source, string array[NUM], int size); //type of message, number of connections, string of node names
         //for parsing all messages
         string parseType(string message);
         //for parsing DV sections of control messages
