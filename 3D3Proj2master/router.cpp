@@ -300,9 +300,15 @@ main(int argc, char *argv[])
 			//" [" << n_bytes << "B] " << buf << std::endl;
 
 		    std::cout << "Message Received:\n"<< buf;
-            //The update DVs for Bellman Ford are stored in DV
-		    std::string **DV = DistanceVector.parseDV(buf);
-
+			
+           		    if(DistanceVector.parseType(buf) == "Control") {
+                //The update DVs for Bellman Ford are stored in DV
+                std::string **DV = DistanceVector.parseDV(buf);
+            }
+		    else{
+		        //Add data packet functionality
+		        std::cout << "Data packet";
+		    }
 
             // Check if new router, and add to list
 			add_new_addr((struct sockaddr *)&their_addr, other_routers);
