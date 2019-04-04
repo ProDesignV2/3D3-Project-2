@@ -22,7 +22,7 @@
 int
 main(int argc, char *argv[])
 {
-	int router_fd, n_bytes;
+	int router_fd, n_bytes, nodeCount = 0;
 	struct sockaddr_storage their_addr;
 	socklen_t their_addr_size;
 	char ipstr[INET6_ADDRSTRLEN], buf[BUFFER_SIZE];
@@ -34,6 +34,8 @@ main(int argc, char *argv[])
 
 
     message DistanceVector;
+    memset(&buf, 0, sizeof buf);
+    n_bytes = strlen(buf);
 
 
 
@@ -135,21 +137,27 @@ main(int argc, char *argv[])
                 switch (*nodeName) {
                     case 'A' :
                         router_port = nodeAndPort[0][1];
+                        nodeCount = 0;
                         break;
                     case 'B' :
                         router_port = nodeAndPort[1][1];
+                        nodeCount = 1;
                         break;
                     case 'C' :
                         router_port = nodeAndPort[2][1];
+                        nodeCount = 2;
                         break;
                     case 'D' :
                         router_port = nodeAndPort[3][1];
+                        nodeCount = 3;
                         break;
                     case 'E' :
                         router_port = nodeAndPort[4][1];
+                        nodeCount = 4;
                         break;
                     case 'F' :
                         router_port = nodeAndPort[5][1];
+                        nodeCount = 5;
                         break;
                     default :
                         perror("Unknown node requested");
@@ -171,7 +179,7 @@ main(int argc, char *argv[])
                                 }
                             }
                         }
-                        strcpy(buf,(DistanceVector.createControlHeader(nodeName, nodeAndPort[addNeighbours], infoAmount)).c_str());
+                        //strcpy(buf,(DistanceVector.createControlHeader(nodeName, nodeAndPort[addNeighbours], infoAmount)).c_str());
                         break;
                     }
                 }
@@ -184,6 +192,7 @@ main(int argc, char *argv[])
                 //Argument structure for new Node:
                 //"<Name> <Port> <Neighbour 1 Name> <Neighbour 1 Cost> <Neighbour 2 Name> <Neighbour 2 Cost>"
 
+                nodeCount = 6;
 
                 for (int newAssign = 0 ; newAssign < 6 ; newAssign++){
                     nodeAndPort[6][newAssign] = argv[newAssign+1];
@@ -199,6 +208,7 @@ main(int argc, char *argv[])
                                                             nodeAndPort[newNeighbour][1].c_str())->ai_addr);
                     }
                 }
+                //strcpy(buf,(DistanceVector.createControlHeader(argv[1], nodeAndPort[6], infoAmount)).c_str());
                 break;
             }
             default:
@@ -223,17 +233,24 @@ main(int argc, char *argv[])
 
 
 			// Create message and set byte count
-			memset(&buf, 0, sizeof buf);
-			//sprintf(buf, "I am a router, located at port %s", argv[1]);
-			n_bytes = strlen(buf);
 
-			printf("\nMessage [%dB]: %s\nRouter [%s] Sending to...\n\n", n_bytes, buf, argv[1]);
+
+            //Reset buffer
+            memset(&buf, 0, sizeof buf);
+            //Recheck buffer
+            strcpy(buf,(DistanceVector.createControlHeader(argv[1], nodeAndPort[nodeCount], infoAmount)).c_str());
+            //sprintf(buf, "I am a router, located at port %s", argv[1]);
+            n_bytes = strlen(buf);
+
+
+			//printf("\nMessage [%dB]: %s\nRouter [%s] Sending to...\n\n", n_bytes, buf, argv[1]);
+			std::cout << "Message Sent:\n" << buf;
 			
 			for(auto router : other_routers){
 				
 				// Print the other router's address and port details
 				inet_ntop(router->sa_family, get_in_addr(router), ipstr, sizeof ipstr);
-				std::cout << ipstr << ":" << ntohs(get_in_port(router)) << std::endl;
+				//std::cout << ipstr << ":" << ntohs(get_in_port(router)) << std::endl;
 
 				//Send message (from buf) to all in mailing list (Neighbours)
 				their_addr_size = sizeof their_addr;
@@ -242,13 +259,14 @@ main(int argc, char *argv[])
 					continue;
 				}
 			}
+
 		}
 
 		// Reset timeout for receiving data
 		tv.tv_sec = TIMEOUT_SEC;
 		tv.tv_usec = TIMEOUT_USEC;
 		
-		printf("\nRouter [%s]\nReceiving from...\n\n", argv[1]);
+		//printf("\nRouter [%s]\nReceiving from...\n\n", argv[1]);
 
 		do
 		{
@@ -277,10 +295,12 @@ main(int argc, char *argv[])
 
 
 			// Print the other router's address and port details
-			//inet_ntop(their_addr.ss_family, get_in_addr((struct sockaddr *)&their_addr), ipstr, sizeof ipstr);
+			inet_ntop(their_addr.ss_family, get_in_addr((struct sockaddr *)&their_addr), ipstr, sizeof ipstr);
+
 			//std::cout << ipstr << ":" << ntohs(get_in_port((struct sockaddr *)&their_addr)) <<
 			//" [" << n_bytes << "B] " << buf << std::endl;
-		
+
+		    std::cout << "Message Received:\n"<< buf;
 			// Check if new router, and add to list	
 			add_new_addr((struct sockaddr *)&their_addr, other_routers);
 		}

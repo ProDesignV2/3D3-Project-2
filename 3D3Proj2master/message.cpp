@@ -44,15 +44,12 @@ string message::createControlHeader(char *source, string array[], int size){
     out += "\n";
     return out;*/
 
-    //Gets timestamp HH:MM:SS\n
+
+    //type          Control\n
+    //timestamp     HH:MM:SS\n
+    //costs         A B 6\nA C 4\n.....
+    //termination   \n\n\r
     string timeOfDay;
-    /*tm timestamp;
-    timeOfDay = to_string(timestamp.tm_hour);
-    timeOfDay += ":";
-    timeOfDay += to_string(timestamp.tm_min);
-    timeOfDay += ":";
-    timeOfDay += to_string(timestamp.tm_sec);
-    timeOfDay += "\n";*/
     time_t current_time = time(0);
     timeOfDay = ctime(&current_time);
 
@@ -67,14 +64,17 @@ string message::createControlHeader(char *source, string array[], int size){
 
     string out = "Control\n";
     out.append(timeOfDay);
+    out += "\n";
     for (int i = 2 ; i < size ; i ++){
         if(array[i] != "" ){
             out.append(source);
             out.append(array[i]);
             i++;
             out.append(array[i]);
+            out += "\n";
         }
     }
+    out += "\n\r";
 
 
     return out;
