@@ -1,0 +1,1424 @@
+
+
+Vertex   Distance from Source
+A			0
+B->A			1
+Thu Apr  4 04:07:23 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+Thu Apr  4 04:07:23 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:07:23 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:07:23 2019
+
+Vertex   Distance from Source
+E			0
+Thu Apr  4 04:07:23 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:07:23 2019
+
+Vertex   Distance from Source
+|
+A			0
+|
+B->A			1
+Thu Apr  4 04:12:17 2019
+
+Vertex   Distance from Source
+|
+A->B			1
+|
+B			0
+Thu Apr  4 04:12:17 2019
+
+Vertex   Distance from Source
+|
+C			0
+Thu Apr  4 04:12:17 2019
+
+Vertex   Distance from Source
+|
+D			0
+Thu Apr  4 04:12:17 2019
+
+Vertex   Distance from Source
+|
+E			0
+Thu Apr  4 04:12:17 2019
+
+Vertex   Distance from Source
+|
+F			0
+Thu Apr  4 04:12:17 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+Thu Apr  4 04:12:54 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+Thu Apr  4 04:12:54 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:12:54 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:12:54 2019
+
+Vertex   Distance from Source
+E			0
+Thu Apr  4 04:12:54 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:12:54 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+Thu Apr  4 04:14:23 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+Thu Apr  4 04:14:23 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:14:23 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:14:23 2019
+
+Vertex   Distance from Source
+E			0
+Thu Apr  4 04:14:23 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:14:23 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+Thu Apr  4 04:15:27 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+Thu Apr  4 04:15:27 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:15:27 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:15:27 2019
+
+Vertex   Distance from Source
+E			0
+Thu Apr  4 04:15:27 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:15:27 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+Thu Apr  4 04:17:15 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+Thu Apr  4 04:17:15 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:17:15 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:17:15 2019
+
+Vertex   Distance from Source
+E			0
+Thu Apr  4 04:17:15 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:17:15 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+Thu Apr  4 04:22:22 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+Thu Apr  4 04:22:22 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:22:22 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:22:22 2019
+
+Vertex   Distance from Source
+E			0
+Thu Apr  4 04:22:22 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:22:22 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+E			0
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+E->A			3
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+E->A->B			4
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+A->E			3
+B->A->E			4
+E			0
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+G			0
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+C->B->A			3
+E->A			3
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+C->B			2
+E->A->B			4
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+A->B->C			3
+B->C			2
+C			0
+E->A->B->C			6
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+A->E			3
+B->A->E			4
+C->B->A->E			6
+E			0
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+G			0
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+C->B->A			3
+D->B->A			5
+E->A			3
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+C->B			2
+D->B			4
+E->A->B			4
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+A->B->C			3
+B->C			2
+C			0
+D->B->C			6
+E->A->B->C			6
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+A->B->D			5
+B->D			4
+C->B->D			6
+D			0
+E->A->B->D			8
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+A->E			3
+B->A->E			4
+C->B->A->E			6
+D->B->A->E			8
+E			0
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+G			0
+Thu Apr  4 04:23:23 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+E			0
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+E->A			3
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+E->A->B			4
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+A->E			3
+B->A->E			4
+E			0
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+G			0
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+C->B->A			3
+E->A			3
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+C->B			2
+E->A->B			4
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+A->B->C			3
+B->C			2
+C			0
+E->A->B->C			6
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+A->E			3
+B->A->E			4
+C->B->A->E			6
+E			0
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+G			0
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+C->B->A			3
+D->B->A			5
+E->A			3
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+C->B			2
+D->B			4
+E->A->B			4
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+A->B->C			3
+B->C			2
+C			0
+D->B->C			6
+E->A->B->C			6
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+A->B->D			5
+B->D			4
+C->B->D			6
+D			0
+E->A->B->D			8
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+A->E			3
+B->A->E			4
+C->B->A->E			6
+D->B->A->E			8
+E			0
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+G			0
+Thu Apr  4 04:24:11 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+E			0
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+E->A			3
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+E->A->B			4
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+A->E			3
+B->A->E			4
+E			0
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+G			0
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+C->B->A			3
+E->A			3
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+C->B			2
+E->A->B			4
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+A->B->C			3
+B->C			2
+C			0
+E->A->B->C			6
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+A->E			3
+B->A->E			4
+C->B->A->E			6
+E			0
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+G			0
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+C->B->A			3
+D->B->A			5
+E->A			3
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+C->B			2
+D->B			4
+E->A->B			4
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+A->B->C			3
+B->C			2
+C			0
+D->B->C			6
+E->A->B->C			6
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+A->B->D			5
+B->D			4
+C->B->D			6
+D			0
+E->A->B->D			8
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+A->E			3
+B->A->E			4
+C->B->A->E			6
+D->B->A->E			8
+E			0
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+G			0
+Thu Apr  4 04:28:01 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+E			0
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+E->A			3
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+E->A->B			4
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+A->E			3
+B->A->E			4
+E			0
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+C->B->A			3
+E->A			3
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+C->B			2
+E->A->B			4
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+A->B->C			3
+B->C			2
+C			0
+E->A->B->C			6
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+A->E			3
+B->A->E			4
+C->B->A->E			6
+E			0
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+C->B->A			3
+D->B->A			5
+E->A			3
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+C->B			2
+D->B			4
+E->A->B			4
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+A->B->C			3
+B->C			2
+C			0
+D->B->C			6
+E->A->B->C			6
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+A->B->D			5
+B->D			4
+C->B->D			6
+D			0
+E->A->B->D			8
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+A->E			3
+B->A->E			4
+C->B->A->E			6
+D->B->A->E			8
+E			0
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:33:44 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+Thu Apr  4 04:42:47 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+Thu Apr  4 04:42:47 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:42:47 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:42:47 2019
+
+Vertex   Distance from Source
+E			0
+Thu Apr  4 04:42:47 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:42:47 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+E->A			3
+Thu Apr  4 04:42:47 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+E->A->B			4
+Thu Apr  4 04:42:47 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:42:47 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:42:47 2019
+
+Vertex   Distance from Source
+A->E			3
+B->A->E			4
+E			0
+Thu Apr  4 04:42:47 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:42:47 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+Thu Apr  4 04:49:44 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+Thu Apr  4 04:49:44 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:49:44 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:49:44 2019
+
+Vertex   Distance from Source
+E			0
+Thu Apr  4 04:49:44 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:49:44 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+E->A			3
+Thu Apr  4 04:49:44 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+E->A->B			4
+Thu Apr  4 04:49:44 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:49:44 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:49:44 2019
+
+Vertex   Distance from Source
+A->E			3
+B->A->E			4
+E			0
+Thu Apr  4 04:49:44 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:49:44 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+Thu Apr  4 04:59:13 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+Thu Apr  4 04:59:13 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:59:13 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:59:13 2019
+
+Vertex   Distance from Source
+E			0
+Thu Apr  4 04:59:13 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:59:13 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+E->A			3
+Thu Apr  4 04:59:13 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+E->A->B			4
+Thu Apr  4 04:59:13 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:59:13 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:59:13 2019
+
+Vertex   Distance from Source
+A->E			3
+B->A->E			4
+E			0
+Thu Apr  4 04:59:13 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:59:13 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+Thu Apr  4 04:59:39 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+Thu Apr  4 04:59:39 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:59:39 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:59:39 2019
+
+Vertex   Distance from Source
+E			0
+Thu Apr  4 04:59:39 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:59:39 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+E->A			3
+Thu Apr  4 04:59:39 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+E->A->B			4
+Thu Apr  4 04:59:39 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 04:59:39 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 04:59:39 2019
+
+Vertex   Distance from Source
+A->E			3
+B->A->E			4
+E			0
+Thu Apr  4 04:59:39 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 04:59:39 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+Thu Apr  4 05:01:31 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+Thu Apr  4 05:01:31 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 05:01:31 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 05:01:31 2019
+
+Vertex   Distance from Source
+E			0
+Thu Apr  4 05:01:31 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 05:01:31 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+E->A			3
+Thu Apr  4 05:01:31 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+E->A->B			4
+Thu Apr  4 05:01:31 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 05:01:31 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 05:01:31 2019
+
+Vertex   Distance from Source
+A->E			3
+B->A->E			4
+E			0
+Thu Apr  4 05:01:31 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 05:01:31 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+Thu Apr  4 05:05:45 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+Thu Apr  4 05:05:45 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 05:05:45 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 05:05:45 2019
+
+Vertex   Distance from Source
+E			0
+Thu Apr  4 05:05:45 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 05:05:45 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+E->A			3
+Thu Apr  4 05:05:45 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+E->A->B			4
+Thu Apr  4 05:05:45 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 05:05:45 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 05:05:45 2019
+
+Vertex   Distance from Source
+A->E			3
+B->A->E			4
+E			0
+Thu Apr  4 05:05:45 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 05:05:45 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+Thu Apr  4 05:05:50 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+Thu Apr  4 05:05:50 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 05:05:50 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 05:05:50 2019
+
+Vertex   Distance from Source
+E			0
+Thu Apr  4 05:05:50 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 05:05:50 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+E->A			3
+Thu Apr  4 05:05:50 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+E->A->B			4
+Thu Apr  4 05:05:50 2019
+
+Vertex   Distance from Source
+C			0
+Thu Apr  4 05:05:50 2019
+
+Vertex   Distance from Source
+D			0
+Thu Apr  4 05:05:50 2019
+
+Vertex   Distance from Source
+A->E			3
+B->A->E			4
+E			0
+Thu Apr  4 05:05:50 2019
+
+Vertex   Distance from Source
+F			0
+Thu Apr  4 05:05:50 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+C->A			2147483647
+D->A			2147483647
+E->A			2147483647
+F->A			2147483647
+G->A			2147483647
+Thu Apr  4 05:06:16 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+C->B			2147483647
+D->B			2147483647
+E->B			2147483647
+F->B			2147483647
+G->B			2147483647
+Thu Apr  4 05:06:16 2019
+
+Vertex   Distance from Source
+A->C			2147483647
+B->C			2147483647
+C			0
+D->C			2147483647
+E->C			2147483647
+F->C			2147483647
+G->C			2147483647
+Thu Apr  4 05:06:16 2019
+
+Vertex   Distance from Source
+A->D			2147483647
+B->D			2147483647
+C->D			2147483647
+D			0
+E->D			2147483647
+F->D			2147483647
+G->D			2147483647
+Thu Apr  4 05:06:16 2019
+
+Vertex   Distance from Source
+A->E			2147483647
+B->E			2147483647
+C->E			2147483647
+D->E			2147483647
+E			0
+F->E			2147483647
+G->E			2147483647
+Thu Apr  4 05:06:16 2019
+
+Vertex   Distance from Source
+A->F			2147483647
+B->F			2147483647
+C->F			2147483647
+D->F			2147483647
+E->F			2147483647
+F			0
+G->F			2147483647
+Thu Apr  4 05:06:16 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+C->A			2147483647
+D->A			2147483647
+E->A			3
+F->A			2147483647
+G->A			2147483647
+Thu Apr  4 05:06:16 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+C->B			2147483647
+D->B			2147483647
+E->A->B			4
+F->B			2147483647
+G->B			2147483647
+Thu Apr  4 05:06:16 2019
+
+Vertex   Distance from Source
+A->C			2147483647
+B->C			2147483647
+C			0
+D->C			2147483647
+E->C			2147483647
+F->C			2147483647
+G->C			2147483647
+Thu Apr  4 05:06:16 2019
+
+Vertex   Distance from Source
+A->D			2147483647
+B->D			2147483647
+C->D			2147483647
+D			0
+E->D			2147483647
+F->D			2147483647
+G->D			2147483647
+Thu Apr  4 05:06:16 2019
+
+Vertex   Distance from Source
+A->E			3
+B->A->E			4
+C->E			2147483647
+D->E			2147483647
+E			0
+F->E			2147483647
+G->E			2147483647
+Thu Apr  4 05:06:16 2019
+
+Vertex   Distance from Source
+A->F			2147483647
+B->F			2147483647
+C->F			2147483647
+D->F			2147483647
+E->F			2147483647
+F			0
+G->F			2147483647
+Thu Apr  4 05:06:16 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+C->A			2147483647
+D->A			2147483647
+E->A			2147483647
+F->A			2147483647
+G->A			2147483647
+Thu Apr  4 05:10:18 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+C->B			2147483647
+D->B			2147483647
+E->B			2147483647
+F->B			2147483647
+G->B			2147483647
+Thu Apr  4 05:10:18 2019
+
+Vertex   Distance from Source
+A->C			2147483647
+B->C			2147483647
+C			0
+D->C			2147483647
+E->C			2147483647
+F->C			2147483647
+G->C			2147483647
+Thu Apr  4 05:10:18 2019
+
+Vertex   Distance from Source
+A->D			2147483647
+B->D			2147483647
+C->D			2147483647
+D			0
+E->D			2147483647
+F->D			2147483647
+G->D			2147483647
+Thu Apr  4 05:10:18 2019
+
+Vertex   Distance from Source
+A->E			2147483647
+B->E			2147483647
+C->E			2147483647
+D->E			2147483647
+E			0
+F->E			2147483647
+G->E			2147483647
+Thu Apr  4 05:10:18 2019
+
+Vertex   Distance from Source
+A->F			2147483647
+B->F			2147483647
+C->F			2147483647
+D->F			2147483647
+E->F			2147483647
+F			0
+G->F			2147483647
+Thu Apr  4 05:10:18 2019
+
+Vertex   Distance from Source
+A->G			2147483647
+B->G			2147483647
+C->G			2147483647
+D->G			2147483647
+E->G			2147483647
+F->G			2147483647
+G			0
+Thu Apr  4 05:10:18 2019
+
+Vertex   Distance from Source
+A			0
+B->A			1
+C->A			2147483647
+D->A			2147483647
+E->A			3
+F->A			2147483647
+G->A			2147483647
+Thu Apr  4 05:10:18 2019
+
+Vertex   Distance from Source
+A->B			1
+B			0
+C->B			2147483647
+D->B			2147483647
+E->A->B			4
+F->B			2147483647
+G->B			2147483647
+Thu Apr  4 05:10:18 2019
+
+Vertex   Distance from Source
+A->C			2147483647
+B->C			2147483647
+C			0
+D->C			2147483647
+E->C			2147483647
+F->C			2147483647
+G->C			2147483647
+Thu Apr  4 05:10:18 2019
+
+Vertex   Distance from Source
+A->D			2147483647
+B->D			2147483647
+C->D			2147483647
+D			0
+E->D			2147483647
+F->D			2147483647
+G->D			2147483647
+Thu Apr  4 05:10:18 2019
+
+Vertex   Distance from Source
+A->E			3
+B->A->E			4
+C->E			2147483647
+D->E			2147483647
+E			0
+F->E			2147483647
+G->E			2147483647
+Thu Apr  4 05:10:18 2019
+
+Vertex   Distance from Source
+A->F			2147483647
+B->F			2147483647
+C->F			2147483647
+D->F			2147483647
+E->F			2147483647
+F			0
+G->F			2147483647
+Thu Apr  4 05:10:18 2019
+
+Vertex   Distance from Source
+A->G			2147483647
+B->G			2147483647
+C->G			2147483647
+D->G			2147483647
+E->G			2147483647
+F->G			2147483647
+G			0
+Thu Apr  4 05:10:18 2019
+
