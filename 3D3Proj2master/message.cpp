@@ -18,8 +18,25 @@ message::message(){
     
 }
 
+//Added timestamp
 string message::createDataHeader(char *source, char *dest, int rport, int sport, string data){
+    string timeOfDay;
+    time_t current_time = time(0);
+    timeOfDay = ctime(&current_time);
+
+    int pos = timeOfDay.find(" ");
+    timeOfDay = timeOfDay.substr(pos+1);
+    pos = timeOfDay.find(" ");
+    timeOfDay = timeOfDay.substr(pos+1);
+    pos = timeOfDay.find(" ");
+    timeOfDay = timeOfDay.substr(pos+1);
+    pos = timeOfDay.find(" ");
+    timeOfDay = timeOfDay.substr(pos+1, 8);
+
+
     string out = "Data\n";
+    out.append(timeOfDay);
+    out += "\n";
     out.append(source); 
     out += ",";
     out.append(dest);
@@ -31,6 +48,7 @@ string message::createDataHeader(char *source, char *dest, int rport, int sport,
     return out;
 }
 
+//Added timestamp
 string message::createControlHeader(char *source, string array[], int size){
     //Needed to alter to deal with string inputs
     /*
@@ -80,6 +98,7 @@ string message::createControlHeader(char *source, string array[], int size){
     return out;
 }
 
+//No changes
 string message::parseType(string message){
     int i = 0;
     char array[15] = {'\0'};
@@ -93,6 +112,23 @@ string message::parseType(string message){
 
 }
 
+//Newly added
+int message::parseTime(string message){
+    int i = 0;
+    char array[6] = {'\0'};
+    int pos = message.find("\n") + 1;
+    while(message.at(pos) != *"\n"){
+        if(message.at(pos) != ':') {
+            array[i] = message.at(pos);
+            i++;
+        }
+        pos++;
+    }
+    //string output = array;
+    return stoi(array);
+}
+
+//Updated
 char message::parseSource(string message){
     int i = 0;
     char out;
@@ -100,9 +136,14 @@ char message::parseSource(string message){
         i++;
     }
     i++;
+    while(message.at(i) != *"\n"){
+        i++;
+    }
+    i++;
     out = message.at(i);
 }
 
+//Combined together
 string message::parseWeights(string message){
     int i = 0;
     int j = 0;
@@ -122,7 +163,6 @@ string message::parseWeights(string message){
     }
 
 }
-
 char message::parseDataSource(string message){
     int i = 0;
     char out;
@@ -134,7 +174,6 @@ char message::parseDataSource(string message){
 
     return out;
 }
-
 char message::parseDataDest(string message){
     int i = 0;
     char out;
@@ -145,6 +184,39 @@ char message::parseDataDest(string message){
     out = message.at(i);
 
     return out;
+}
+
+string **message::parseDV(string message){
+    int i = 0, j = 0, k = 0;
+    string ** array;
+    array = new string*[HEIGHT];
+    for(int h = 0 ; h < HEIGHT ; h++){
+        array[h] = new string[3];
+        for(int w = 0 ; w < 3 ; w++){
+            array[h][w] = "";
+        }
+    }
+
+    while(message.at(i) != *"\n"){
+        i++;
+    }
+    i++;
+    while(message.at(i) != *"\n"){
+        i++;
+    }
+    i++;
+
+    while(message.at(i) != *"\r") {
+        while (message.at(i) != *"\n" ) {
+            array[k][j] = message.at(i);
+            j++;
+            i++;
+        }
+        i++;
+        k++;
+        j = 0;
+    }
+    return  array;
 }
 
 int message::parseInPort(string message){

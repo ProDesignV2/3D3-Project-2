@@ -18,6 +18,8 @@
 
 #define DEFAULT_PORT "4000"
 #define BUFFER_SIZE 1024
+#define INFOAMT 14
+#define NODEAMT 8
 
 int
 main(int argc, char *argv[])
@@ -44,13 +46,10 @@ main(int argc, char *argv[])
     //it creates a table with Nodes and their ports, it will create a new node & assign it the inputted port and neighbours
     //(some functionality needs to be added to this to add Bellman Ford link costs)
 
-        const int nodeAmount = 8, infoAmount = 14;
-
         //nodeAndPort is a table with the node name and their port and their neighbours
-
         //<name, port, neighbour1 name, neighbour1 cost,..,neighbour6 name, neighbour6 cost>
 
-        std::string nodeAndPort[nodeAmount][infoAmount] =
+        std::string nodeAndPort[NODEAMT][INFOAMT] =
                                         {{"A", "", "", "", "", "", "", "", "", "", "", "", "", ""},
                                          {"B", "", "", "", "", "", "", "", "", "", "", "", "", ""},
                                          {"C", "", "", "", "", "", "", "", "", "", "", "", "", ""},
@@ -167,11 +166,11 @@ main(int argc, char *argv[])
                 router_fd = setup_socket_udp(router_port.c_str());
 
                 //Connects node to neighbours
-                for(int addNeighbours = 0 ; addNeighbours < nodeAmount ; addNeighbours ++){
+                for(int addNeighbours = 0 ; addNeighbours < NODEAMT ; addNeighbours ++){
                     if(nodeName == nodeAndPort[addNeighbours][0]){
-                        for(int neighbour = 2 ; neighbour < infoAmount ; neighbour++){
+                        for(int neighbour = 2 ; neighbour < INFOAMT ; neighbour++){
                             if(nodeAndPort[addNeighbours][neighbour] != "" && neighbour % 2 == 0){
-                                for(int neighbourPort = 0 ; neighbourPort < infoAmount ; neighbourPort ++) {
+                                for(int neighbourPort = 0 ; neighbourPort < INFOAMT ; neighbourPort ++) {
                                     if(nodeAndPort[addNeighbours][neighbour] == nodeAndPort[neighbourPort][0]) {
                                         other_routers.push_back(get_address("localhost",
                                                 nodeAndPort[neighbourPort][1].c_str())->ai_addr);
@@ -179,7 +178,7 @@ main(int argc, char *argv[])
                                 }
                             }
                         }
-                        //strcpy(buf,(DistanceVector.createControlHeader(nodeName, nodeAndPort[addNeighbours], infoAmount)).c_str());
+                        //strcpy(buf,(DistanceVector.createControlHeader(nodeName, nodeAndPort[addNeighbours], INFOAMT)).c_str());
                         break;
                     }
                 }
@@ -202,13 +201,13 @@ main(int argc, char *argv[])
                 router_port = argv[2];
                 router_fd = setup_socket_udp(router_port.c_str());
 
-                for(int newNeighbour = 0 ; newNeighbour < nodeAmount ; newNeighbour ++){
+                for(int newNeighbour = 0 ; newNeighbour < NODEAMT ; newNeighbour ++){
                     if(nodeAndPort[newNeighbour][0] == nodeAndPort[6][2] || nodeAndPort[newNeighbour][0] == nodeAndPort[6][4]){
                         other_routers.push_back(get_address("localhost",
                                                             nodeAndPort[newNeighbour][1].c_str())->ai_addr);
                     }
                 }
-                //strcpy(buf,(DistanceVector.createControlHeader(argv[1], nodeAndPort[6], infoAmount)).c_str());
+                //strcpy(buf,(DistanceVector.createControlHeader(argv[1], nodeAndPort[6], INFOAMT)).c_str());
                 break;
             }
             default:
@@ -238,7 +237,7 @@ main(int argc, char *argv[])
             //Reset buffer
             memset(&buf, 0, sizeof buf);
             //Recheck buffer
-            strcpy(buf,(DistanceVector.createControlHeader(argv[1], nodeAndPort[nodeCount], infoAmount)).c_str());
+            strcpy(buf,(DistanceVector.createControlHeader(argv[1], nodeAndPort[nodeCount], INFOAMT)).c_str());
             //sprintf(buf, "I am a router, located at port %s", argv[1]);
             n_bytes = strlen(buf);
 
@@ -301,7 +300,11 @@ main(int argc, char *argv[])
 			//" [" << n_bytes << "B] " << buf << std::endl;
 
 		    std::cout << "Message Received:\n"<< buf;
-			// Check if new router, and add to list	
+            //The update DVs for Bellman Ford are stored in DV
+		    std::string **DV = DistanceVector.parseDV(buf);
+
+
+            // Check if new router, and add to list
 			add_new_addr((struct sockaddr *)&their_addr, other_routers);
 		}
 		while((tv.tv_sec > 0) && (tv.tv_usec > 0));

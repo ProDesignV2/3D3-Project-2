@@ -5,7 +5,8 @@
 #include <ctime>
 #include <string>
 
-#define NUM 14
+#define WIDTH 14
+#define HEIGHT 8
 
 using namespace std;
 
@@ -17,13 +18,15 @@ class message{
         message();
         //message creation
         string createDataHeader(char *source, char *dest, int rport, int sport, string data); //receive port and send port
-        string createControlHeader(char *source, string array[NUM], int size); //type of message, number of connections, string of node names
+        string createControlHeader(char *source, string array[WIDTH], int size); //type of message, number of connections, string of node names
         //for parsing all messages
         string parseType(string message);
         //for parsing DV sections of control messages
+        int parseTime(string message);
         char parseSource(string message);
         string parseWeights(string message);
         //for parsing data messages
+        string ** parseDV(string message);
         char parseDataSource(string message);
         char parseDataDest(string message);
         int parseInPort(string message);
