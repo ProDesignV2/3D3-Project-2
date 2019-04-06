@@ -326,8 +326,10 @@ main(int argc, char *argv[])
 		    std::cout << "Message Received:\n"<< buf;
 			
            	if(DistanceVector.parseType(buf) == "Control") {
+                // Number of DV lines
+                int num_DVs = 0;
                 //The update DVs for Bellman Ford are stored in DV
-                std::string **DV = DistanceVector.parseDV(buf);
+                std::string **DV = DistanceVector.parseDV(buf, &num_DVs);
             }
 		    else{
 		        //Add data packet functionality

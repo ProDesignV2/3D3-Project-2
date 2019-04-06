@@ -6,7 +6,7 @@
 #include <bits/stdc++.h> 
 
 #include "bellman.hpp"
-#include "./3D3Proj2master/message.hpp"
+#include "message.hpp"
 
 using namespace std;
 
