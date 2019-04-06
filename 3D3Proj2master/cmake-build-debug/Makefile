@@ -123,6 +123,33 @@ depend:
 	$(MAKE) -f CMakeFiles/3D3Proj2master.dir/build.make CMakeFiles/3D3Proj2master.dir/build
 .PHONY : 3D3Proj2master/fast
 
+bellman.o: bellman.cpp.o
+
+.PHONY : bellman.o
+
+# target to build an object file
+bellman.cpp.o:
+	$(MAKE) -f CMakeFiles/3D3Proj2master.dir/build.make CMakeFiles/3D3Proj2master.dir/bellman.cpp.o
+.PHONY : bellman.cpp.o
+
+bellman.i: bellman.cpp.i
+
+.PHONY : bellman.i
+
+# target to preprocess a source file
+bellman.cpp.i:
+	$(MAKE) -f CMakeFiles/3D3Proj2master.dir/build.make CMakeFiles/3D3Proj2master.dir/bellman.cpp.i
+.PHONY : bellman.cpp.i
+
+bellman.s: bellman.cpp.s
+
+.PHONY : bellman.s
+
+# target to generate assembly for a file
+bellman.cpp.s:
+	$(MAKE) -f CMakeFiles/3D3Proj2master.dir/build.make CMakeFiles/3D3Proj2master.dir/bellman.cpp.s
+.PHONY : bellman.cpp.s
+
 helper.o: helper.cpp.o
 
 .PHONY : helper.o
@@ -213,6 +240,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... 3D3Proj2master"
 	@echo "... edit_cache"
+	@echo "... bellman.o"
+	@echo "... bellman.i"
+	@echo "... bellman.s"
 	@echo "... helper.o"
 	@echo "... helper.i"
 	@echo "... helper.s"

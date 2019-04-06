@@ -2,6 +2,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/3D3Proj2master.dir/helper.cpp.o"
   "CMakeFiles/3D3Proj2master.dir/router.cpp.o"
   "CMakeFiles/3D3Proj2master.dir/message.cpp.o"
+  "CMakeFiles/3D3Proj2master.dir/bellman.cpp.o"
   "3D3Proj2master.pdb"
   "3D3Proj2master"
 )

@@ -87,6 +87,12 @@
 		<Unit filename="/home/senan/CLionProjects/3D3Proj2master/FileTopology">
 			<Option target="3D3Proj2master"/>
 		</Unit>
+		<Unit filename="/home/senan/CLionProjects/3D3Proj2master/bellman.cpp">
+			<Option target="3D3Proj2master"/>
+		</Unit>
+		<Unit filename="/home/senan/CLionProjects/3D3Proj2master/bellman.hpp">
+			<Option target="3D3Proj2master"/>
+		</Unit>
 		<Unit filename="/home/senan/CLionProjects/3D3Proj2master/helper.cpp">
 			<Option target="3D3Proj2master"/>
 		</Unit>

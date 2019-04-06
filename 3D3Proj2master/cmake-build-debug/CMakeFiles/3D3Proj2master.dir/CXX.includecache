@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+/home/senan/CLionProjects/3D3Proj2master/bellman.hpp
+string
+-
+
 /home/senan/CLionProjects/3D3Proj2master/helper.h
 sys/socket.h
 -
@@ -63,4 +67,6 @@ helper.h
 /home/senan/CLionProjects/3D3Proj2master/helper.h
 message.hpp
 /home/senan/CLionProjects/3D3Proj2master/message.hpp
+bellman.hpp
+/home/senan/CLionProjects/3D3Proj2master/bellman.hpp
 

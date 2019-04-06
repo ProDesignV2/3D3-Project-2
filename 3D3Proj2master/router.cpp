@@ -31,6 +31,7 @@ main(int argc, char *argv[])
 	char ipstr[INET6_ADDRSTRLEN], buf[BUFFER_SIZE];
 	std::string router_port = DEFAULT_PORT;
 	timeval tv;
+	bool firstNeighbour = true;
 
     // Create empty vector for sockaddr structs
     std::vector<struct sockaddr *> other_routers;
@@ -39,7 +40,8 @@ main(int argc, char *argv[])
     message DistanceVector;
     memset(&buf, 0, sizeof buf);
     n_bytes = strlen(buf);
-
+    // Create empty graph for Bellman-Ford
+    struct Graph* graph = bellmanSetup();
 
 
 
@@ -103,13 +105,20 @@ main(int argc, char *argv[])
                 }
                 //Sets up node neighbours and costs to them from file
                 for(int checkNeighbours = 0 ; checkNeighbours < 6 ; checkNeighbours ++){
-                    if(nodeAndPort[checkNeighbours][0][0] == topologyString[0]){
+                    if(nodeAndPort[checkNeighbours][0][0] == topologyString[0] && nodeAndPort[checkNeighbours][0] == argv[1]){
                         for(int numNeigbours = 2 ; numNeigbours < 10 ; numNeigbours++){
-                            if(nodeAndPort[checkNeighbours][numNeigbours] == ""){
-                                nodeAndPort[checkNeighbours][numNeigbours] = topologyString[2];
-                                numNeigbours++;
-                                nodeAndPort[checkNeighbours][numNeigbours] = topologyString[10];
-                                break;
+                            if(nodeAndPort[checkNeighbours][numNeigbours] == "") {
+                                if (firstNeighbour) {
+                                    nodeAndPort[checkNeighbours][numNeigbours] = topologyString[2];
+                                    firstNeighbour = false;
+                                    break;
+                                }
+                                else{
+                                    if(nodeAndPort[checkNeighbours][numNeigbours-1] == ""){
+                                        nodeAndPort[checkNeighbours][numNeigbours] = topologyString[2];
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
@@ -117,30 +126,9 @@ main(int argc, char *argv[])
             }
         }
 
-        // TESTING BELLMAN-FORD
-        for(int i = 0; i < NODEAMT; i++){
-            for(int j = 0; j < INFOAMT; j++){
-                std::cout << nodeAndPort[i][j] << " ";
-            }
-            std::cout << std::endl;
-        }
-        std::cout << "NEW" << std::endl;
 
-        // Create empty graph for Bellman-Ford
-        struct Graph* graph = bellmanSetup();
-        // Populate graph with lowest link costs
-        bellmanSetupFile(graph, nodeAndPort);
-        // Load any updated (lower) link costs into 2D-Array table
-        bellmanUpdateArray(nodeAndPort);
 
-        // TESTING BELLMAN-FORD
-        for(int i = 0; i < NODEAMT; i++){
-            for(int j = 0; j < INFOAMT; j++){
-                std::cout << nodeAndPort[i][j] << " ";
-            }
-            std::cout << std::endl;
-        }
-        return 0;
+
 
         //Check if arg[1] == A/B/.../F if so
         //Set command argument as router port if entered
@@ -297,6 +285,12 @@ main(int argc, char *argv[])
 			if(!wait_for_packet(router_fd, &tv)){ break; }
 
 
+
+
+            // Populate graph with lowest link costs
+            bellmanSetupFile(graph, nodeAndPort);
+
+
             // Reset buffer
             memset(&buf, 0, sizeof buf);
             n_bytes = 0;
@@ -330,10 +324,13 @@ main(int argc, char *argv[])
                 int num_DVs = 0;
                 //The update DVs for Bellman Ford are stored in DV
                 std::string **DV = DistanceVector.parseDV(buf, &num_DVs);
+                bellmanUpdateFile(graph, DV, num_DVs);
+                bellmanUpdateArray(nodeAndPort);
             }
 		    else{
 		        //Add data packet functionality
 		        std::cout << "Data packet";
+		        //Needs send function
 		    }
 
             // Check if new router, and add to list
