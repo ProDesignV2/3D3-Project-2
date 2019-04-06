@@ -18,7 +18,7 @@ class message{
         message();
         //message creation
         string createDataHeader(char *source, char *dest, int rport, int sport, string data); //receive port and send port
-        string createControlHeader(char *source, string array[WIDTH], int size); //type of message, number of connections, string of node names
+        string createControlHeader(char *source, string array[WIDTH], int size, char present[HEIGHT], char disFlag); //type of message, number of connections, string of node names
         //for parsing all messages
         string parseType(string message);
         //for parsing DV sections of control messages
@@ -34,5 +34,6 @@ class message{
         //funtions to print various messages/payloads
         void printHeaderMessage(string input);
         void printData(string input);
-
+        char parseOtherNodes(string** message, int number);
+        char passSource(string message);
 };

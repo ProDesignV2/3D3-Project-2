@@ -417,20 +417,22 @@ bool bellmanUpdateArray(string nodeAndPort[NODEAMT][INFOAMT]){
     return updated;
 }
 
-void bellmanSetupFile(struct Graph* graph, string nodeAndPort[NODEAMT][INFOAMT]){
-    
+void bellmanSetupFile(struct Graph* graph, string nodeAndPort[NODEAMT][INFOAMT], char present[NODEAMT]){
+
+
+
     for(int source = 0; source < NODEAMT; source++){
 
         char buf[BUFFER_SIZE];
         message DistanceVector;
         char source_name = nodeAndPort[source][0][0];
 
-        if(source_name == 0){ cout << "Source [" << source << "]" << endl; continue; }
+        //if(source_name == 0){ cout << "Source [" << source << "]" << endl; continue; }
 
         // Reset buffer
         memset(&buf, 0, sizeof buf);
         // Put DV into buffer
-        strcpy(buf, (DistanceVector.createControlHeader(&source_name, nodeAndPort[source], INFOAMT)).c_str());
+        strcpy(buf, (DistanceVector.createControlHeader(&source_name, nodeAndPort[source], INFOAMT, present, 0)).c_str());
         
         // Counter for DV lines
         int num_DVs = 0;
