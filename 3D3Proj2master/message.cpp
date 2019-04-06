@@ -186,7 +186,7 @@ char message::parseDataDest(string message){
     return out;
 }
 
-string **message::parseDV(string message){
+string **message::parseDV(string message, int *num_DVs){
     int i = 0, j = 0, k = 0;
     string ** array;
     array = new string*[HEIGHT];
@@ -216,7 +216,11 @@ string **message::parseDV(string message){
         k++;
         j = 0;
     }
-    return  array;
+
+    // Set number of DVs to k - 1
+    *num_DVs = k - 1; 
+
+    return array;
 }
 
 int message::parseInPort(string message){

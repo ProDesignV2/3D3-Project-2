@@ -15,6 +15,7 @@
 
 #include "helper.h"
 #include "message.hpp"
+#include "bellman.hpp"
 
 #define DEFAULT_PORT "4000"
 #define BUFFER_SIZE 1024
@@ -116,7 +117,30 @@ main(int argc, char *argv[])
             }
         }
 
+        // TESTING BELLMAN-FORD
+        for(int i = 0; i < NODEAMT; i++){
+            for(int j = 0; j < INFOAMT; j++){
+                std::cout << nodeAndPort[i][j] << " ";
+            }
+            std::cout << std::endl;
+        }
+        std::cout << "NEW" << std::endl;
 
+        // Create empty graph for Bellman-Ford
+        struct Graph* graph = bellmanSetup();
+        // Populate graph with lowest link costs
+        bellmanSetupFile(graph, nodeAndPort);
+        // Load any updated (lower) link costs into 2D-Array table
+        bellmanUpdateArray(nodeAndPort);
+
+        // TESTING BELLMAN-FORD
+        for(int i = 0; i < NODEAMT; i++){
+            for(int j = 0; j < INFOAMT; j++){
+                std::cout << nodeAndPort[i][j] << " ";
+            }
+            std::cout << std::endl;
+        }
+        return 0;
 
         //Check if arg[1] == A/B/.../F if so
         //Set command argument as router port if entered
@@ -301,7 +325,7 @@ main(int argc, char *argv[])
 
 		    std::cout << "Message Received:\n"<< buf;
 			
-           		    if(DistanceVector.parseType(buf) == "Control") {
+           	if(DistanceVector.parseType(buf) == "Control") {
                 //The update DVs for Bellman Ford are stored in DV
                 std::string **DV = DistanceVector.parseDV(buf);
             }

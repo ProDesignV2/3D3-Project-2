@@ -26,7 +26,7 @@ class message{
         char parseSource(string message);
         string parseWeights(string message);
         //for parsing data messages
-        string ** parseDV(string message);
+        string ** parseDV(string message, int *num_DVs);
         char parseDataSource(string message);
         char parseDataDest(string message);
         int parseInPort(string message);
