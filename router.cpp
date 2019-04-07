@@ -243,13 +243,7 @@ main(int argc, char *argv[])
 
     // Wait for connections and deal with them
 	while(1){
-        if(messageCount < adjNodes*3 && !notified){
-            cout << "Updating...\n";
-        }
-        else{
-            cout << "All tables have been updated.\n";
-            notified = 1;
-        }
+        
 		if(!other_routers.empty()){
 
 		    //Send cycle
@@ -388,6 +382,13 @@ main(int argc, char *argv[])
 
 
 		    std::cout << "Message Received:\n"<< buf;
+            if(messageCount < adjNodes*3 && !notified){
+                cout << "Updating...\n";
+            }
+            else{
+                cout << "All tables have been updated.\n";
+                notified = 1;
+            }
 			
            	if(DistanceVector.parseType(buf) == "Control") {
                 bellmanUpdateFile(graph, DV, num_DVs);
