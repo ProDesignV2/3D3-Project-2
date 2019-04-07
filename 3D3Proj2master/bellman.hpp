@@ -45,4 +45,6 @@ bool bellmanUpdateArray(std::string nodeAndPort[NODEAMT][INFOAMT]);
 
 void bellmanSetupFile(struct Graph* graph, std::string nodeAndPort[NODEAMT][INFOAMT], char present[NODEAMT]);
 
+char getNextRouter(char destination);
+
 #endif
