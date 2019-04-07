@@ -378,24 +378,22 @@ main(int argc, char *argv[])
 
 
 
-                disflag = DistanceVector.passSource(buf);
-                if (disTimeOfDeath == '1') {
-                    disTimeOfDeath = '0';
-                }
+            disflag = DistanceVector.passSource(buf);
+            if (disTimeOfDeath == '1') {
+                disTimeOfDeath = '0';
+            }
 
-                if (disflag == 'A' || disflag == 'B' || disflag == 'C' || disflag == 'D' || disflag == 'E' ||
-                    disflag == 'F' || disflag == 'G') {
-                    //if(disTimeOfDeath > DistanceVector.passLength(buf)) {
-                        disTimeOfDeath = DistanceVector.passLength(buf) - 1;
-                    //}
-                    for (int i = 0; i < NODEAMT; i++) {
-                        if (nodesPresent[i] == disflag) {
-                            disappearingFlag = disflag;
-                            nodesPresent[i] = 0;
-                            //std::cout << "gone";
-                        }
+            if (disflag == 'A' || disflag == 'B' || disflag == 'C' || disflag == 'D' || disflag == 'E' ||
+                disflag == 'F' || disflag == 'G') {
+                    disTimeOfDeath = DistanceVector.passLength(buf) - 1;
+                for (int i = 0; i < NODEAMT; i++) {
+                    if (nodesPresent[i] == disflag) {
+                        disappearingFlag = disflag;
+                        nodesPresent[i] = 0;
+                        disCount = 2;
                     }
                 }
+            }
 
 
 
@@ -464,11 +462,7 @@ main(int argc, char *argv[])
 
             if( disappearance > DISTIMEOUT){
 
-                //Add received disappearance protocol
-                //Add remove friends
 
-
-		        //Check if any == 0
 		        //Check if any neighbours == 0 and remove if so
 		        for(int i = 0 ; i < NODEAMT ; i++){
 		            for(int j = 0 ; j < NODEAMT ; j++) {
@@ -484,7 +478,6 @@ main(int argc, char *argv[])
                         }
                     }
 		        }
-		        std::cout << "\n";
                 memset(checkNode, 0 , sizeof checkNode);
                 disappearance = 0;
 		    }
@@ -498,7 +491,7 @@ main(int argc, char *argv[])
 		while((tv.tv_sec > 0) && (tv.tv_usec > 0));
         disappearance++;
         if(disCount > 0){
-            disCount++;
+            disCount--;
         }
 
 	}
