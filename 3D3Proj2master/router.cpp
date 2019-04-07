@@ -38,6 +38,7 @@ main(int argc, char *argv[])
 	memset(nodesPresent, 0 , sizeof nodesPresent);
     memset(checkNode, 0 , sizeof checkNode);
     memset(neighbours, 0, sizeof neighbours);
+    char *nodeName;
 
     // Create empty vector for sockaddr structs
     std::vector<struct sockaddr *> other_routers;
@@ -146,7 +147,7 @@ main(int argc, char *argv[])
 
             //Checks node name argument and sets the port accordingly
             case 2: {
-                char *nodeName = argv[1];
+                nodeName = argv[1];
                 switch (*nodeName) {
                     case 'A' :
                         router_port = nodeAndPort[0][1];
@@ -206,14 +207,11 @@ main(int argc, char *argv[])
 
                 nodeCount = 6;
 
-
-
-                //Add neighbours[] and present[] and checkNode[]
-
-
                 for (int newAssign = 0 ; newAssign < 6 ; newAssign++){
                     nodeAndPort[6][newAssign] = argv[newAssign+1];
                 }
+                neighbours[0] = argv[2][0];
+                neighbours[1] = argv[4][0];
 
 
                 router_port = argv[2];
@@ -302,6 +300,24 @@ main(int argc, char *argv[])
 					   (struct sockaddr *)&their_addr, &their_addr_size);
 			if(n_bytes == -1) { perror("recvfrom"); exit(0); }
 
+			int countPresence = 0;
+			char checkPresence = DistanceVector.parseDataSource(buf);
+			for(int i = 0 ; i < NODEAMT ; i++) {
+                if (neighbours[i] != checkPresence){
+                    countPresence++;
+                }
+			}
+			if(countPresence == 8){
+			    for(int j = 0 ; j < NODEAMT ; j++){
+			        if(neighbours[j] == 0){
+			            neighbours[j] = checkPresence;
+                        nodeAndPort[6][0][0] = checkPresence;
+			            break;
+			        }
+			    }
+			}
+
+
 
 
 			//Add parsing of data and Update 2D array
@@ -368,15 +384,13 @@ main(int argc, char *argv[])
                 }
 
                 if (disflag == 'A' || disflag == 'B' || disflag == 'C' || disflag == 'D' || disflag == 'E' ||
-                    disflag == 'F') {
+                    disflag == 'F' || disflag == 'G') {
                     //if(disTimeOfDeath > DistanceVector.passLength(buf)) {
                         disTimeOfDeath = DistanceVector.passLength(buf) - 1;
                     //}
                     for (int i = 0; i < NODEAMT; i++) {
                         if (nodesPresent[i] == disflag) {
-
                             disappearingFlag = disflag;
-                            //std::cout << "\nmmmmmmm" << disTimeOfDeath << std::endl;
                             nodesPresent[i] = 0;
                             //std::cout << "gone";
                         }
@@ -399,11 +413,24 @@ main(int argc, char *argv[])
                 bellmanUpdateFile(graph, DV, num_DVs);
                 bellmanUpdateArray(nodeAndPort);
             }
-		    else{
-		        //Add data packet functionality
-		        std::cout << "Data packet";
-		        //Needs send function
-		    }
+            else { //data message
+                char dest = DistanceVector.parseDataDest(buf); //parses destination node
+                if (dest == *nodeName) {
+                    DistanceVector.printHeaderMessage(buf);
+                    cout << "\n";
+                    DistanceVector.printData(buf);
+                    cout << "\n";
+                } else {
+                    int xpos = *nodeName - 65;
+                    int ypos = dest - 65;
+                    DistanceVector.printHeaderMessage(buf); //prints header message each time a node recieves data.
+                    string nextNode = nodeAndPort[xpos][ypos];
+                    char portnum[10] = {'\0'};
+                    //need to run BF again to determine next node.
+
+                    //then send buf to next node on path
+                }
+            }
 
 
             switch(DistanceVector.parseDataSource(buf)) {
@@ -428,9 +455,9 @@ main(int argc, char *argv[])
                 case 'G':
                     checkNode[6] = 1;
                     break;
-                default :
+		        default :
                     checkNode[7] = 1;
-                    std::cout << "default on disappearance\n";
+                    //std::cout << "default on disappearance\n";
                     break;
             }
 
@@ -464,6 +491,8 @@ main(int argc, char *argv[])
 
             // Check if new router, and add to list
 			add_new_addr((struct sockaddr *)&their_addr, other_routers);
+
+
 
 		}
 		while((tv.tv_sec > 0) && (tv.tv_usec > 0));

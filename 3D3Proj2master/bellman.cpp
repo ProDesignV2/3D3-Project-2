@@ -302,7 +302,7 @@ struct Graph* bellmanSetup(){
 
     inFile.open("links.csv");
     if (inFile.is_open()) {
-        cout << "File has been opened" << endl;
+        //cout << "File has been opened" << endl;
     }   
     else {
         cout << "NO FILE HAS BEEN OPENED" << endl;
@@ -369,7 +369,9 @@ bool bellmanUpdateArray(string nodeAndPort[NODEAMT][INFOAMT]){
     // Load "paths.txt" file into 2D array
     ifstream inFile;
     inFile.open("paths.txt");
-    if (inFile.is_open()){ cout << "File has been opened" << endl; }
+    if (inFile.is_open()){
+        //cout << "File has been opened" << endl;
+    }
     else{ cout << "NO FILE HAS BEEN OPENED" << endl; }
     string line;
     bool updated = false;
