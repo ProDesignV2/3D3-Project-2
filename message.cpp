@@ -175,11 +175,15 @@ string message::parseWeights(string message){
 char message::parseDataSource(string message){
     int i = 0;
     char out;
-    while(message.at(i) != *"\n"){
+    while(message.at(i) != *"\n"){ //skips "Data\n"
         i++;
     }
     i++;
-    out = message.at(i);
+    while(message.at(i) != *"\n"){ //skips "Time\n"
+        i++;
+    }
+    i++;
+    out = message.at(i); //assigns source to output
 
     return out;
 }

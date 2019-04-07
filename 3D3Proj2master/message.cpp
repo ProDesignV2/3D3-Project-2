@@ -83,7 +83,7 @@ string message::createControlHeader(char *source, string array[], int size, char
 
     string out = "Control\n";
     out.append(source);
-    if(TTL != '0'){
+    if(TTL != '0' && disFlag != 0){
         out += " ";
         out += disFlag;
         out += " ";
@@ -221,12 +221,23 @@ string **message::parseDV(string message, int *num_DVs){
         i++;
     }
     i++;
-
+    int count = 0;
+    string inter;
     while(message.at(i) != *"\r") {
+        count = 0;
         while (message.at(i) != *"\n" ) {
-            array[k][j] = message.at(i);
-            j++;
-            i++;
+            count++;
+            if(count > 3){
+                inter = array[k][j-1];
+                inter += message[i];
+                array[k][j-1] = inter;
+                i++;
+            }
+            else {
+                array[k][j] = message.at(i);
+                j++;
+                i++;
+            }
         }
         i++;
         k++;
