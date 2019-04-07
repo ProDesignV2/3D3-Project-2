@@ -1,0 +1,18 @@
+#include <fstream>
+
+#define FILE_NAME "testing.txt"
+
+int main(int argc, char *argv[]){
+    // Get command-line argument
+    std::string temp(argv[1]);
+    temp.insert(0, "ROUTER [");
+    temp.push_back(']');
+    // Open file
+    std::ofstream textFile;
+    textFile.open(FILE_NAME, std::ios_base::app);
+    // Write line to file 
+    textFile << temp << std::endl;
+    // Close file
+    textFile.close();
+    return 0;
+}
