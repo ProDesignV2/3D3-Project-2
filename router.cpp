@@ -40,6 +40,10 @@ main(int argc, char *argv[])
     memset(neighbours, 0, sizeof neighbours);
     char *nodeName = argv[1];
 
+    int messageCount = 0;
+    int notified = -1; //keeps track of whether thre user has been notified of convergence
+    int adjNodes = 0;
+
     // Create empty vector for sockaddr structs
     std::vector<struct sockaddr *> other_routers;
 
@@ -239,7 +243,13 @@ main(int argc, char *argv[])
 
     // Wait for connections and deal with them
 	while(1){
-	
+        if(messageCount < adjNodes*3 && !notified){
+            cout << "Updating...\n";
+        }
+        else{
+            cout << "All tables have been updated.\n";
+            notified = 1;
+        }
 		if(!other_routers.empty()){
 
 		    //Send cycle
@@ -381,10 +391,18 @@ main(int argc, char *argv[])
 			
            	if(DistanceVector.parseType(buf) == "Control") {
 
-                //The update DVs for Bellman Ford are stored in DV
-                //DV = DistanceVector.parseDV(buf, &num_DVs);
+                
                 bellmanUpdateFile(graph, DV, num_DVs);
-                bellmanUpdateArray(nodeAndPort);
+                adjNodes = num_DVs;
+                if(!bellmanUpdateArray(nodeAndPort)){
+                    messageCount++;
+                }
+                else{
+                    cout << "Update detected!\n";
+                    bellmanUpdateArray(nodeAndPort);
+                    messageCount = 0;
+                    notified = -1;
+                }
             }
 		    else{ //data message
                 char dest = DistanceVector.parseDataDest(buf); //parses destination node
@@ -402,7 +420,7 @@ main(int argc, char *argv[])
                     char portnum[10] ={'\0'};
                     //need to run BF again to determine next node.
 
-                    //then send buf to next node on path
+                    //then send buf to next node on path.
                 }
 		    }
 
