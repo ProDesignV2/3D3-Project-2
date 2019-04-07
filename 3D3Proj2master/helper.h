@@ -8,7 +8,7 @@
 #include <vector>
 #include <string>
 
-#define TIMEOUT_SEC 2
+#define TIMEOUT_SEC 4
 #define TIMEOUT_USEC 500000
 
 void *
