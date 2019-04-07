@@ -285,7 +285,7 @@ struct Graph* bellmanSetup(){
 
     inFile.open("links.csv");
     if (inFile.is_open()) {
-        cout << "File has been opened" << endl;
+        //cout << "File has been opened" << endl;
     }
     else {
         cout << "NO FILE HAS BEEN OPENED" << endl;
@@ -432,7 +432,7 @@ void bellmanSetupFile(struct Graph* graph, string nodeAndPort[NODEAMT][INFOAMT],
         // Reset buffer
         memset(&buf, 0, sizeof buf);
         // Put DV into buffer
-        strcpy(buf, (DistanceVector.createControlHeader(&source_name, nodeAndPort[source], INFOAMT, present, 0)).c_str());
+        strcpy(buf, (DistanceVector.createControlHeader(&source_name, nodeAndPort[source], INFOAMT, present, 0, '0')).c_str());
         
         // Counter for DV lines
         int num_DVs = 0;

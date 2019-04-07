@@ -49,7 +49,7 @@ string message::createDataHeader(char *source, char *dest, int rport, int sport,
 }
 
 //Added timestamp
-string message::createControlHeader(char *source, string array[], int size, char present[HEIGHT], char disFlag){
+string message::createControlHeader(char *source, string array[], int size, char present[HEIGHT], char disFlag, char TTL){
     //Needed to alter to deal with string inputs
     /*
     int i = 0;
@@ -83,9 +83,11 @@ string message::createControlHeader(char *source, string array[], int size, char
 
     string out = "Control\n";
     out.append(source);
-    if(disFlag != 0){
+    if(TTL != '0'){
         out += " ";
         out += disFlag;
+        out += " ";
+        out += TTL;
     }
     out += "\n";
     out.append(timeOfDay);
@@ -136,6 +138,7 @@ int message::parseTime(string message){
         }
         pos++;
     }
+    //std::cout << array;
     //string output = array;
     return stoi(array);
 }
@@ -307,6 +310,18 @@ char message::passSource(string message){
     }
     i++;
     out = message.at(i+2);
+
+    return out;
+}
+
+char message::passLength(string message){
+    int i = 0;
+    char out;
+    while(message.at(i) != *"\n"){
+        i++;
+    }
+    i++;
+    out = message.at(i+4);
 
     return out;
 }

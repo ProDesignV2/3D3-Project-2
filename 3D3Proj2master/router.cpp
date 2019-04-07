@@ -22,7 +22,7 @@
 #define BUFFER_SIZE 1024
 #define INFOAMT 14
 #define NODEAMT 8
-#define DISTIMEOUT 3
+#define DISTIMEOUT 2
 
 int
 main(int argc, char *argv[])
@@ -30,11 +30,11 @@ main(int argc, char *argv[])
 	int router_fd, n_bytes, nodeCount = 0;
 	struct sockaddr_storage their_addr;
 	socklen_t their_addr_size;
-	char ipstr[INET6_ADDRSTRLEN], buf[BUFFER_SIZE], nodesPresent[NODEAMT], checkNode[NODEAMT], neighbours[NODEAMT];
+	char ipstr[INET6_ADDRSTRLEN], buf[BUFFER_SIZE], nodesPresent[NODEAMT], checkNode[NODEAMT], neighbours[NODEAMT], disflag;
 	std::string router_port = DEFAULT_PORT;
 	timeval tv;
 	int disappearance, disCount= 0;
-	char disappearingFlag = 0;
+	char disappearingFlag = '0', disTimeOfDeath = '0';
 	memset(nodesPresent, 0 , sizeof nodesPresent);
     memset(checkNode, 0 , sizeof checkNode);
     memset(neighbours, 0, sizeof neighbours);
@@ -252,7 +252,7 @@ main(int argc, char *argv[])
             //Reset buffer
             memset(&buf, 0, sizeof buf);
             //Recheck buffer
-            strcpy(buf,(DistanceVector.createControlHeader(argv[1], nodeAndPort[nodeCount], INFOAMT, nodesPresent, disappearingFlag)).c_str());
+            strcpy(buf,(DistanceVector.createControlHeader(argv[1], nodeAndPort[nodeCount], INFOAMT, nodesPresent, disappearingFlag, disTimeOfDeath)).c_str());
             n_bytes = strlen(buf);
 
 
@@ -281,7 +281,9 @@ main(int argc, char *argv[])
 
 
 
-		disappearingFlag = 0;
+		if(disTimeOfDeath == '0') {
+            disappearingFlag = '0';
+        }
 		do
 		{
 			// Break and go to send routine if false (timeout)	
@@ -360,15 +362,27 @@ main(int argc, char *argv[])
 
 
 
-            char disflag = DistanceVector.passSource(buf);
-            if(disflag == 'A' || disflag =='B' || disflag =='C' || disflag =='D' || disflag =='E' || disflag =='F'){
-                for(int i = 0 ; i < NODEAMT ; i ++){
-                    if(nodesPresent[i] == disflag){
-                        nodesPresent[i] = 0;
-                        std::cout << "gone";
+                disflag = DistanceVector.passSource(buf);
+                if (disTimeOfDeath == '1') {
+                    disTimeOfDeath = '0';
+                }
+
+                if (disflag == 'A' || disflag == 'B' || disflag == 'C' || disflag == 'D' || disflag == 'E' ||
+                    disflag == 'F') {
+                    //if(disTimeOfDeath > DistanceVector.passLength(buf)) {
+                        disTimeOfDeath = DistanceVector.passLength(buf) - 1;
+                    //}
+                    for (int i = 0; i < NODEAMT; i++) {
+                        if (nodesPresent[i] == disflag) {
+
+                            disappearingFlag = disflag;
+                            //std::cout << "\nmmmmmmm" << disTimeOfDeath << std::endl;
+                            nodesPresent[i] = 0;
+                            //std::cout << "gone";
+                        }
                     }
                 }
-            }
+
 
 
 
@@ -436,8 +450,8 @@ main(int argc, char *argv[])
                                 if(nodesPresent[k] == neighbours[j] && nodesPresent[k] != 0){
                                     nodesPresent[k] = 0;
                                     disappearingFlag = neighbours[j];
-                                    std::cout << "-------"<< disappearingFlag ;
                                     disCount = 3;
+                                    disTimeOfDeath = '4';
                                 }
                             }
                         }
