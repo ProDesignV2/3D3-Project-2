@@ -69,12 +69,12 @@ void printArr1(int dist[], int n, int path[], int src, string data[]) {
     int k;
     time_t current_time=time(0);
     char* dt = ctime(&current_time);
-    // ofstream myfile;
+    ofstream myfile;
     ofstream myfile1;
     myfile1.open ("paths.txt",ios::app);
-    // myfile.open ("nodes.txt", ios::app);
+    myfile.open ("nodes.txt", ios::app);
     // printf("Vertex   Distance from Source\n");
-    // myfile << "Vertex   Distance from Source\n"; 
+    myfile << "Vertex   Distance from Source\n"; 
     
     for (int i = 0; i < n; ++i){
         
@@ -83,36 +83,36 @@ void printArr1(int dist[], int n, int path[], int src, string data[]) {
             char letter = k; 
             // printf("%c", letter);
             data[i]=letter;
-            // myfile << letter;
+            myfile << letter;
              if(i==src){
                 data[i]=data[i]+letter;
             }
             //printf("->");
             if(i!=src){
                 // printf("->");
-                // myfile << "->";
+                myfile << "->";
                 int k=path[i];
             
                 if(k==src){
                     int src1=src+65;
                     // printf("%c", src1);
-                    // myfile << (char)(src1);
+                    myfile << (char)(src1);
                     data[i]=data[i]+ (char)(src1);
                 }
            
                 while(k!=src){
                     // printf("%c", k+65);
-                    // myfile << (char)(k+65);
+                    myfile << (char)(k+65);
                     //data[i]=data[i]+ (char)(k+65); // this line gives you the path .......
                     // printf("->");
-                    // myfile << "->";
+                    myfile << "->";
                     //cout << k;
                     //cout << src;
                 
                     k=path[k];
                     if(k==src){
                       // printf("%c", k+65);
-                    //   myfile << (char)(k+65);
+                      myfile << (char)(k+65);
                       data[i]=data[i]+ (char)(k+65);
                       k=src;
                       break;
@@ -123,7 +123,7 @@ void printArr1(int dist[], int n, int path[], int src, string data[]) {
             }
        
             // printf("\t\t\t %d\n", dist[i]);
-            // myfile << "\t\t\t" << dist[i] << "\n";
+            myfile << "\t\t\t" << dist[i] << "\n";
             data[i]=data[i]+ ",";
             data[i]=data[i] + to_string(dist[i]);
             data[i]=data[i]+ "\n";
@@ -136,8 +136,8 @@ void printArr1(int dist[], int n, int path[], int src, string data[]) {
     }
     
     // cout<<dt<<endl;
-    // myfile << dt << "\n";
-    // myfile.close();
+    myfile << dt << "\n";
+    myfile.close();
     myfile1.close(); 
 
 }
@@ -443,9 +443,4 @@ void bellmanSetupFile(struct Graph* graph, string nodeAndPort[NODEAMT][INFOAMT],
 
         bellmanUpdateFile(graph, DV, num_DVs);
     }
-}
-
-char getNextRouter(char destination){
-    //
-    return '\0';
 }
