@@ -390,8 +390,6 @@ main(int argc, char *argv[])
 		    std::cout << "Message Received:\n"<< buf;
 			
            	if(DistanceVector.parseType(buf) == "Control") {
-
-                
                 bellmanUpdateFile(graph, DV, num_DVs);
                 adjNodes = num_DVs;
                 if(!bellmanUpdateArray(nodeAndPort)){
