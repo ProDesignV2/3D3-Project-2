@@ -83,7 +83,7 @@ string message::createControlHeader(char *source, string array[], int size, char
 
     string out = "Control\n";
     out.append(source);
-    if(TTL != '0' && TTL != 0){
+    if(TTL != '0' && disFlag != 0){
         out += " ";
         out += disFlag;
         out += " ";

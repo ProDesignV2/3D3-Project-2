@@ -22,7 +22,7 @@
 #define BUFFER_SIZE 1024
 #define INFOAMT 14
 #define NODEAMT 8
-#define DISTIMEOUT 2
+#define DISTIMEOUT 5
 
 int
 main(int argc, char *argv[])
