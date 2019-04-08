@@ -22,7 +22,7 @@ class message{
         //for parsing all messages
         string parseType(string message);
         //for parsing DV sections of control messages
-        int parseTime(string message);
+        string parseTime(string message);
         char parseSource(string message);
         string parseWeights(string message);
         //for parsing data messages

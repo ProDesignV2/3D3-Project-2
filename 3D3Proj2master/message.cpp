@@ -127,20 +127,25 @@ string message::parseType(string message){
 }
 
 //Newly added
-int message::parseTime(string message){
+string message::parseTime(string message){
     int i = 0;
-    char array[6] = {'\0'};
-    int pos = message.find("\n") + 1;
-    while(message.at(pos) != *"\n"){
-        if(message.at(pos) != ':') {
-            array[i] = message.at(pos);
-            i++;
-        }
-        pos++;
+    string array = "";
+    while(message.at(i) != *"\n"){
+        i++;
+    }
+    i++;
+    while(message.at(i) != *"\n"){
+        i++;
+    }
+    i++;
+    while(message.at(i) != *"\n"){
+        array += message.at(i);
+        i++;
+
     }
     //std::cout << array;
     //string output = array;
-    return stoi(array);
+    return array;
 }
 
 //Updated
