@@ -9,6 +9,7 @@
 #include "message.hpp"
 
 using namespace std;
+const int M = 7; 
 
 // Creates a graph with V vertices and E edges 
 struct Graph* createGraph(int V, int E) { 
@@ -17,6 +18,21 @@ struct Graph* createGraph(int V, int E) {
     graph->E = E; 
     graph->edge = new Edge[E]; 
     return graph; 
+}
+
+
+int getnextNode(char dest,char source, int overallpath[M][M]){
+
+    int next_node; 
+
+    next_node=overallpath[source][dest]; 
+    cout << next_node << endl;
+
+    next_node=next_node+ 10000 ;
+
+    return next_node;
+
+
 }
 
 void printArr(int dist[], int n, int path[], int src) { 
@@ -142,7 +158,7 @@ void printArr1(int dist[], int n, int path[], int src, string data[]) {
 
 }
 
-void BellmanFord(struct Graph* graph, int src, string data[]) { 
+void BellmanFord(struct Graph* graph, int src, string data[],int overallpath[M][M]) { 
     int V = graph->V; 
     int E = graph->E; 
     int max=0;
@@ -210,37 +226,9 @@ void BellmanFord(struct Graph* graph, int src, string data[]) {
     return; 
 }
 
-void editdata6(struct Graph* graph, char source, char destination, int weight, string data[]){
 
-    int V = graph->V; 
-    int E = graph->E; 
-    ofstream inFile;
-    inFile.open("paths.txt");
-    inFile <<"";
-    inFile.close();
 
-    for(int i=0; i<E; i++){
-        cout<< graph->edge[i].src<<endl;
-        cout<< destination << endl;
-        if((graph->edge[i].src)==source && (graph->edge[i].dest)== destination){
-            graph->edge[i].weight = weight;
-            
-        }
-
-        if((graph->edge[i].dest)==source && (graph->edge[i].src)== destination){
-            graph->edge[i].weight = weight;
-        }
-
-    }
-
-    for(int i=0; i<6; i++){
-        BellmanFord(graph, i,data);
-     
-    }
-
-}
-
-void editdata7(struct Graph* graph, char source, char destination, int weight, string data[], bool newDV){
+void editdata7(struct Graph* graph, char source, char destination, int weight, string data[], bool newDV,int overallpath[M][M]){
 
     int V = graph->V; 
     int E = graph->E; 
@@ -266,7 +254,7 @@ void editdata7(struct Graph* graph, char source, char destination, int weight, s
     }
 
     for(int i=0; i<7; i++){
-        BellmanFord(graph, i, data);
+        BellmanFord(graph, i, data, overallpath);
     }
 
 }
