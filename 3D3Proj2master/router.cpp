@@ -131,8 +131,6 @@ main(int argc, char *argv[])
 
 
 
-
-
         //Check if arg[1] == A/B/.../F if so
         //Set command argument as router port if entered
 
@@ -182,10 +180,10 @@ main(int argc, char *argv[])
 
                 //Connects node to neighbours
                 for(int addNeighbours = 0 ; addNeighbours < NODEAMT ; addNeighbours ++){
-                    if(nodeName == nodeAndPort[addNeighbours][0]){
+                    if(nodeName == nodeAndPort[addNeighbours][0]){                                        
                         for(int neighbour = 2 ; neighbour < INFOAMT ; neighbour++){
                             if(nodeAndPort[addNeighbours][neighbour] != "" && neighbour % 2 == 0){
-                                for(int neighbourPort = 0 ; neighbourPort < INFOAMT ; neighbourPort ++) {
+                                for(int neighbourPort = 0 ; neighbourPort < NODEAMT ; neighbourPort ++) {
                                     if(nodeAndPort[addNeighbours][neighbour] == nodeAndPort[neighbourPort][0]) {
                                         other_routers.push_back(get_address("localhost",
                                                 nodeAndPort[neighbourPort][1].c_str())->ai_addr);
@@ -197,6 +195,7 @@ main(int argc, char *argv[])
                     }
                 }
                 break;
+
             }
 
             case 7 : {
@@ -230,7 +229,6 @@ main(int argc, char *argv[])
                 fprintf(stderr, "usage: ./router [port]\n");
                 exit(0);
         }
-
 
     disappearance = 0;
 

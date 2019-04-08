@@ -4,6 +4,6 @@
 
 int main(int argc, char *argv[]){
     // Sleep for specified time
-    sleep(std::stoi(argv[1]));
+    while(1){}
     return 0;
 }
