@@ -5,7 +5,7 @@
 # Delay inbetween each process
 readonly TIME_BETWEEN=0.1
 readonly ROUTER_DIR="routers-run"
-readonly ROUTER_EXE="simple"
+readonly ROUTER_EXE="my-router"
 
 # All possible router arguments
 COMMANDS=("A" "B" "C" "D" "E" "F")
