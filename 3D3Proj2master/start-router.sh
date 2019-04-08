@@ -52,9 +52,9 @@ stop_all=0
 while [ $stop_all -eq 0 ]
   do
     # Read in user input
-    read -p "What do you want to do? " action
+    read -p "ENTER ACTION (ADD DELETE INJECT STOP) " action
     # Switch statement to choose action
-    case  $action in
+    case $action in
     "ADD")
       # Read in user input
       echo "<Port> <Neighbour 1 Name> <Neighbour 1 Cost> <Neighbour 2 Name> <Neighbour 2 Cost>"
@@ -77,7 +77,7 @@ while [ $stop_all -eq 0 ]
       kill ${ROUTER_IDS[$choice]}
       ;;
     "INJECT")
-      echo "INJECT..."
+      echo "INJECTING DATA..."
       # Create temporary directory for data injecting router
       mkdir $ROUTER_EXE-$INJECT_FLAG
       # Copy router binary and other files into new folder
@@ -90,9 +90,12 @@ while [ $stop_all -eq 0 ]
       rm -r $ROUTER_EXE-$INJECT_FLAG
       ;;
     "STOP")
-      echo "STOP..."
+      echo "STOPPING ALL ROUTERS..."
       # Break from while loop using flag
       stop_all=1
+      ;;
+    *)
+      echo "INVALID ACTION"
       ;;
     esac
   done
