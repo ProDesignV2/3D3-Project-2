@@ -4,6 +4,7 @@
 #include <string>
 
 #define INFOAMT 14
+#define M 7
 #define NODEAMT 8
 #define BUFFER_SIZE 1024
 
@@ -36,6 +37,8 @@ void BellmanFord(struct Graph* graph, int src, std::string data[]);
 void editdata6(struct Graph* graph, char source, char destination, int weight, std::string data[]);
 
 void editdata7(struct Graph* graph, char source, char destination, int weight, std::string data[], bool newDV);
+
+int getnextNode(char dest,char source, int overallpath[M][M])
 
 struct Graph* bellmanSetup();
 
