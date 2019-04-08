@@ -32,11 +32,11 @@ void printArr(int dist[], int n, int path[], int src);
 
 void printArr1(int dist[], int n, int path[], int src, std::string data[]);
 
-void BellmanFord(struct Graph* graph, int src, std::string data[]);
+void BellmanFord(struct Graph* graph, int src, std::string data[], int overallpath[M][M]);
 
 void editdata6(struct Graph* graph, char source, char destination, int weight, std::string data[]);
 
-void editdata7(struct Graph* graph, char source, char destination, int weight, std::string data[], bool newDV);
+void editdata7(struct Graph* graph, char source, char destination, int weight, std::string data[], bool newDV,int overallpath[M][M]);
 
 int getnextNode(char dest,char source, int overallpath[M][M])
 
