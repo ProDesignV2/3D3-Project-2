@@ -34,16 +34,14 @@ main(int argc, char *argv[])
 	std::string router_port = DEFAULT_PORT;
 	timeval tv;
 	int disappearance, disCount= 0;
-	char disappearingFlag = 0;
+	char disappearingFlag = '0', disTimeOfDeath = '0';
 	memset(nodesPresent, 0 , sizeof nodesPresent);
     memset(checkNode, 0 , sizeof checkNode);
     memset(neighbours, 0, sizeof neighbours);
     char *nodeName = argv[1];
 
-    int messageCount = 0;
+    int messageCount = 0; //number of messages without an update
     int notified = -1; //keeps track of whether thre user has been notified of convergence
-    int adjNodes = 0;
-
     // Create empty vector for sockaddr structs
     std::vector<struct sockaddr *> other_routers;
 
@@ -53,7 +51,6 @@ main(int argc, char *argv[])
     n_bytes = strlen(buf);
     // Create empty graph for Bellman-Ford
     struct Graph* graph = bellmanSetup();
-
 
 
     //In the braces below is code that will setup a port with a known node name argument by reading the topology file,
@@ -189,7 +186,7 @@ main(int argc, char *argv[])
                     if(nodeName == nodeAndPort[addNeighbours][0]){
                         for(int neighbour = 2 ; neighbour < INFOAMT ; neighbour++){
                             if(nodeAndPort[addNeighbours][neighbour] != "" && neighbour % 2 == 0){
-                                for(int neighbourPort = 0 ; neighbourPort < INFOAMT ; neighbourPort ++) {
+                                for(int neighbourPort = 0 ; neighbourPort < NODEAMT ; neighbourPort ++) {
                                     if(nodeAndPort[addNeighbours][neighbour] == nodeAndPort[neighbourPort][0]) {
                                         other_routers.push_back(get_address("localhost",
                                                 nodeAndPort[neighbourPort][1].c_str())->ai_addr);
@@ -257,7 +254,7 @@ main(int argc, char *argv[])
             //Reset buffer
             memset(&buf, 0, sizeof buf);
             //Recheck buffer
-            strcpy(buf,(DistanceVector.createControlHeader(argv[1], nodeAndPort[nodeCount], INFOAMT, nodesPresent, disappearingFlag)).c_str());
+            strcpy(buf,(DistanceVector.createControlHeader(argv[1], nodeAndPort[nodeCount], INFOAMT, nodesPresent, disappearingFlag, disTimeOfDeath)).c_str());
             n_bytes = strlen(buf);
 
 
@@ -374,6 +371,13 @@ main(int argc, char *argv[])
                     }
                 }
             }
+            int numNodes = 0;
+            for(int i = 0 ; i < NODEAMT ; i++) {
+                    
+                    if(nodesPresent[i] != 0){
+                        numNodes++;
+                    }
+                }
 
 
 
@@ -382,25 +386,38 @@ main(int argc, char *argv[])
 
 
 		    std::cout << "Message Received:\n"<< buf;
-            if(messageCount < adjNodes*3 && !notified){
-                cout << "Updating...\n";
-            }
-            else{
+
+            if(messageCount > 10){
                 cout << "All tables have been updated.\n";
                 notified = 1;
+            }
+            else{
+                cout << "Updating...\n";
             }
 			
            	if(DistanceVector.parseType(buf) == "Control") {
                 bellmanUpdateFile(graph, DV, num_DVs);
-                adjNodes = num_DVs;
+                
+                for(int i = 0 ; i < NODEAMT ; i++) {
+                    int nodeCount = 0;
+                    if(nodesPresent[i] != 0){
+                        nodeCount++;
+                    }
+                }
+                if(nodeCount != numNodes){
+                    cout << "Update detected!\n";
+                    bellmanUpdateArray(nodeAndPort);
+                    messageCount = 0;
+                }
                 if(!bellmanUpdateArray(nodeAndPort)){
                     messageCount++;
                 }
+                
                 else{
                     cout << "Update detected!\n";
                     bellmanUpdateArray(nodeAndPort);
                     messageCount = 0;
-                    notified = -1;
+                    //notified = -1;
                 }
             }
 		    else{ //data message
@@ -411,14 +428,12 @@ main(int argc, char *argv[])
                     DistanceVector.printData(buf);
                     cout << "\n";
                 }
-                else{
+                else{ //data message must be forwarded on
+                    //need to re run Bellman Ford and send message along correect port
                     int xpos = *nodeName - 65;
                     int ypos = dest - 65;
                     DistanceVector.printHeaderMessage(buf); //prints header message each time a node recieves data.
-                    string nextNode = nodeAndPort[xpos][ypos];
-                    char portnum[10] ={'\0'};
-                    //need to run BF again to determine next node.
-
+                
                     //then send buf to next node on path.
                 }
 		    }
