@@ -22,7 +22,7 @@
 #define BUFFER_SIZE 1024
 #define INFOAMT 14
 #define NODEAMT 8
-#define DISTIMEOUT 3
+#define DISTIMEOUT 5
 
 int
 main(int argc, char *argv[])
@@ -30,18 +30,36 @@ main(int argc, char *argv[])
 	int router_fd, n_bytes, nodeCount = 0;
 	struct sockaddr_storage their_addr;
 	socklen_t their_addr_size;
-	char ipstr[INET6_ADDRSTRLEN], buf[BUFFER_SIZE], nodesPresent[NODEAMT], checkNode[NODEAMT], neighbours[NODEAMT];
-	std::string router_port = DEFAULT_PORT;
+	char ipstr[INET6_ADDRSTRLEN], buf[BUFFER_SIZE], nodesPresent[NODEAMT], checkNode[NODEAMT], neighbours[NODEAMT], disflag, clonePresent[NODEAMT];
+	std::string router_port = DEFAULT_PORT, cloneDV[NODEAMT][3];
 	timeval tv;
+	bool convFlag= true, disapflag = false;
 	int disappearance, disCount= 0;
-	char disappearingFlag = '0', disTimeOfDeath = '0';
+	char disappearingFlag = '0', disTimeOfDeath = '0', disClone = '0';
 	memset(nodesPresent, 0 , sizeof nodesPresent);
     memset(checkNode, 0 , sizeof checkNode);
     memset(neighbours, 0, sizeof neighbours);
-    char *nodeName = argv[1];
+    char *nodeName;
 
-    int messageCount = 0; //number of messages without an update
+    int messageCount = 0;
     int notified = -1; //keeps track of whether thre user has been notified of convergence
+
+
+    std::string filename = "routing-output";
+    filename += argv[1];
+    filename.append(".txt");
+    std::fstream routerOutput;
+    routerOutput.open(filename, std::ios_base::trunc | std::ios_base::out);
+    if(!routerOutput.is_open()) {
+        perror("Won't open output file");
+    }
+    routerOutput.close();
+    routerOutput.open(filename, std::ios_base::app);
+    if(!routerOutput.is_open()){
+        perror("Won't open output file");
+    }
+
+
     // Create empty vector for sockaddr structs
     std::vector<struct sockaddr *> other_routers;
 
@@ -53,6 +71,7 @@ main(int argc, char *argv[])
     struct Graph* graph = bellmanSetup();
 
 
+
     //In the braces below is code that will setup a port with a known node name argument by reading the topology file,
     //it creates a table with Nodes and their ports, it will create a new node & assign it the inputted port and neighbours
     //(some functionality needs to be added to this to add Bellman Ford link costs)
@@ -60,7 +79,7 @@ main(int argc, char *argv[])
         //nodeAndPort is a table with the node name and their port and their neighbours
         //<name, port, neighbour1 name, neighbour1 cost,..,neighbour6 name, neighbour6 cost>
 
-        std::string nodeAndPort[NODEAMT][INFOAMT] =
+        std::string clonetable[NODEAMT][INFOAMT], nodeAndPort[NODEAMT][INFOAMT] =
                                         {{"A", "", "", "", "", "", "", "", "", "", "", "", "", ""},
                                          {"B", "", "", "", "", "", "", "", "", "", "", "", "", ""},
                                          {"C", "", "", "", "", "", "", "", "", "", "", "", "", ""},
@@ -148,7 +167,7 @@ main(int argc, char *argv[])
 
             //Checks node name argument and sets the port accordingly
             case 2: {
-                
+                nodeName = argv[1];
                 switch (*nodeName) {
                     case 'A' :
                         router_port = nodeAndPort[0][1];
@@ -208,14 +227,11 @@ main(int argc, char *argv[])
 
                 nodeCount = 6;
 
-
-
-                //Add neighbours[] and present[] and checkNode[]
-
-
                 for (int newAssign = 0 ; newAssign < 6 ; newAssign++){
                     nodeAndPort[6][newAssign] = argv[newAssign+1];
                 }
+                neighbours[0] = argv[2][0];
+                neighbours[1] = argv[4][0];
 
 
                 router_port = argv[2];
@@ -240,7 +256,7 @@ main(int argc, char *argv[])
 
     // Wait for connections and deal with them
 	while(1){
-        
+	
 		if(!other_routers.empty()){
 
 		    //Send cycle
@@ -265,7 +281,6 @@ main(int argc, char *argv[])
 				
 				// Print the other router's address and port details
 				inet_ntop(router->sa_family, get_in_addr(router), ipstr, sizeof ipstr);
-
 				//Send message (from buf) to all in mailing list (Neighbours)
 				their_addr_size = sizeof their_addr;
 				if (send_all(router_fd, buf, &n_bytes, router, their_addr_size) == -1) {
@@ -283,7 +298,9 @@ main(int argc, char *argv[])
 
 
 
-		disappearingFlag = 0;
+		if(disTimeOfDeath == '0') {
+            disappearingFlag = '0';
+        }
 		do
 		{
 			// Break and go to send routine if false (timeout)	
@@ -302,6 +319,24 @@ main(int argc, char *argv[])
 					   (struct sockaddr *)&their_addr, &their_addr_size);
 			if(n_bytes == -1) { perror("recvfrom"); exit(0); }
 
+			int countPresence = 0;
+			char checkPresence = DistanceVector.parseDataSource(buf);
+			for(int i = 0 ; i < NODEAMT ; i++) {
+                if (neighbours[i] != checkPresence){
+                    countPresence++;
+                }
+			}
+			if(countPresence == 8){
+			    for(int j = 0 ; j < NODEAMT ; j++){
+			        if(neighbours[j] == 0){
+			            neighbours[j] = checkPresence;
+                        nodeAndPort[6][0][0] = checkPresence;
+			            break;
+			        }
+			    }
+			}
+
+
 
 
 			//Add parsing of data and Update 2D array
@@ -314,6 +349,10 @@ main(int argc, char *argv[])
 
 			// Print the other router's address and port details
 			inet_ntop(their_addr.ss_family, get_in_addr((struct sockaddr *)&their_addr), ipstr, sizeof ipstr);
+
+//			for(int i =0 ; i < NODEAMT ; i++){
+//			    clonePresent[i] = nodesPresent[i];
+//			}
 
 
 			//Allows neighbours to be added
@@ -362,22 +401,24 @@ main(int argc, char *argv[])
 
 
 
-            char disflag = DistanceVector.passSource(buf);
-            if(disflag == 'A' || disflag =='B' || disflag =='C' || disflag =='D' || disflag =='E' || disflag =='F'){
-                for(int i = 0 ; i < NODEAMT ; i ++){
-                    if(nodesPresent[i] == disflag){
+            disflag = DistanceVector.passSource(buf);
+            if (disTimeOfDeath == '1') {
+                disTimeOfDeath = '0';
+            }
+
+            if (disflag == 'A' || disflag == 'B' || disflag == 'C' || disflag == 'D' || disflag == 'E' ||
+                disflag == 'F' || disflag == 'G') {
+                    disTimeOfDeath = DistanceVector.passLength(buf) - 1;
+                for (int i = 0; i < NODEAMT; i++) {
+                    if (nodesPresent[i] == disflag) {
+                        disapflag = true;
+                        disappearingFlag = disflag;
                         nodesPresent[i] = 0;
-                        std::cout << "gone";
+                        disCount = 2;
                     }
                 }
             }
-            int numNodes = 0;
-            for(int i = 0 ; i < NODEAMT ; i++) {
-                    
-                    if(nodesPresent[i] != 0){
-                        numNodes++;
-                    }
-                }
+
 
 
 
@@ -386,7 +427,6 @@ main(int argc, char *argv[])
 
 
 		    std::cout << "Message Received:\n"<< buf;
-
             if(messageCount > 10){
                 cout << "All tables have been updated.\n";
                 notified = 1;
@@ -394,49 +434,131 @@ main(int argc, char *argv[])
             else{
                 cout << "Updating...\n";
             }
-			
-           	if(DistanceVector.parseType(buf) == "Control") {
-                bellmanUpdateFile(graph, DV, num_DVs);
-                
-                for(int i = 0 ; i < NODEAMT ; i++) {
-                    int nodeCount = 0;
-                    if(nodesPresent[i] != 0){
-                        nodeCount++;
-                    }
-                }
-                if(nodeCount != numNodes){
-                    cout << "Update detected!\n";
-                    bellmanUpdateArray(nodeAndPort);
-                    messageCount = 0;
-                }
-                if(!bellmanUpdateArray(nodeAndPort)){
-                    messageCount++;
-                }
-                
-                else{
-                    cout << "Update detected!\n";
-                    bellmanUpdateArray(nodeAndPort);
-                    messageCount = 0;
-                    //notified = -1;
+
+
+            if (disappearingFlag == 'A' || disappearingFlag == 'B' || disappearingFlag == 'C' || disappearingFlag == 'D'
+            || disappearingFlag == 'E' ||disappearingFlag == 'F' || disappearingFlag == 'G'){
+                if(disCount == 2) {
+                    routerOutput << "Node " << disappearingFlag
+                                 << " has been removed from the network.\nIts values will be kept in the table.\n";
+                    routerOutput << "\n";
+                    routerOutput.flush();
                 }
             }
-		    else{ //data message
+
+			
+           	if(DistanceVector.parseType(buf) == "Control") {
+
+
+                for(int i = 0 ; i < NODEAMT ; i++){
+                    for(int j = 0 ; j < 3 ; j++){
+                        cloneDV[i][j] = DV[i][j];
+                    }
+                }
+
+                //The update DVs for Bellman Ford are stored in DV
+                //DV = DistanceVector.parseDV(buf, &num_DVs);
+                for(int i = 0 ; i < INFOAMT ; i ++){
+                    for(int j = 0 ; j < NODEAMT ; j ++){
+                        clonetable[j][i] = nodeAndPort[j][i];
+                    }
+                }
+
+
+
+
+                bellmanUpdateFile(graph, DV, num_DVs);
+                if(bellmanUpdateArray(nodeAndPort)){
+                    routerOutput << DistanceVector.parseTime(buf);
+                    routerOutput << "\n";
+                    routerOutput << "\n";
+                    for(int i = 0 ; i < NODEAMT ; i++){
+                        for(int j = 0 ; j < INFOAMT ; j++){
+                            if(clonetable[i][j] == ""){
+                                break;
+                            }
+                            routerOutput << clonetable[i][j];
+                            routerOutput << ",";
+                        }
+                        routerOutput << "\n";
+                    }
+
+                    for(int i = 0 ; i < NODEAMT ; i++){
+                        for(int j = 0 ; j < 3 ; j++){
+                            if(cloneDV[i][j] == "" && i == 0 && j == 0){
+                                routerOutput << "Update caused by addition of neighbour node (costs read from topology file).";
+                                break;
+                            }
+                            if(cloneDV[i][j] == ""){
+                                break;
+                            }
+                            routerOutput << cloneDV[i][j];
+                            routerOutput << ",";
+                        }
+                    }
+                    routerOutput << "\n";
+                    routerOutput << "\n";
+                    for(int i = 0 ; i < NODEAMT ; i++){
+                        for(int j = 0 ; j < INFOAMT ; j++){
+                            if(nodeAndPort[i][j] == ""){
+                                break;
+                            }
+                            routerOutput << nodeAndPort[i][j];
+                            routerOutput << ",";
+                        }
+                        routerOutput << "\n";
+                    }
+                    routerOutput << "\n";
+                    routerOutput.flush();
+                }
+                else{
+                    bellmanUpdateArray(nodeAndPort);
+                    messageCount++;
+                    convFlag = false;
+                }
+                int flag = NODEAMT;
+                for(int i = 0 ; i < NODEAMT ; i ++) {
+                    if(clonePresent[i] != nodesPresent[i]){
+                        flag--;
+                    }
+                    if (convFlag && flag != NODEAMT || disapflag) {
+                        cout << "Update detected!\n";
+                        bellmanUpdateArray(nodeAndPort);
+                        messageCount = 0;
+                        disapflag = false;
+                        break;
+                    }
+                }
+                for(int i =0 ; i < NODEAMT ; i++){
+                    clonePresent[i] = nodesPresent[i];
+                }
+                convFlag = true;
+            }
+            else { //data message
                 char dest = DistanceVector.parseDataDest(buf); //parses destination node
-                if(dest == *nodeName){
+                if (dest == *nodeName) {
                     DistanceVector.printHeaderMessage(buf);
                     cout << "\n";
                     DistanceVector.printData(buf);
                     cout << "\n";
-                }
-                else{ //data message must be forwarded on
-                    //need to re run Bellman Ford and send message along correect port
+                } else {
                     int xpos = *nodeName - 65;
                     int ypos = dest - 65;
                     DistanceVector.printHeaderMessage(buf); //prints header message each time a node recieves data.
-                
-                    //then send buf to next node on path.
+                    int portNum = getnextNode(xpos, ypos);
+                    int bufSize = 1024;
+                    
+                    //these next lines were an issue with Data sending, and we ran out of time to fix it
+
+                    //struct sockaddr *router = get_address("localhost",portNum)->ai_addr;
+                    //inet_ntop(router->sa_family, get_in_addr(router), ipstr, sizeof ipstr);
+                    //their_addr_size = sizeof their_addr;
+                    //send_all(router_fd, buf, &bufSize, router, their_addr_size);
+
+                    //need to run BF again to determine next node.
+                    //then send buf to next node on path
                 }
-		    }
+            }
 
 
             switch(DistanceVector.parseDataSource(buf)) {
@@ -461,36 +583,34 @@ main(int argc, char *argv[])
                 case 'G':
                     checkNode[6] = 1;
                     break;
-                default :
+		        default :
                     checkNode[7] = 1;
-                    std::cout << "default on disappearance\n";
+                    //std::cout << "default on disappearance\n";
                     break;
             }
 
 
+
+
             if( disappearance > DISTIMEOUT){
 
-                //Add received disappearance protocol
-                //Add remove friends
 
-
-		        //Check if any == 0
 		        //Check if any neighbours == 0 and remove if so
 		        for(int i = 0 ; i < NODEAMT ; i++){
 		            for(int j = 0 ; j < NODEAMT ; j++) {
                         if (checkNode[i] == 0 && nodeAndPort[i][0][0] == neighbours[j]){
                             for(int k  = 0 ; k < NODEAMT ; k++){
                                 if(nodesPresent[k] == neighbours[j] && nodesPresent[k] != 0){
+                                    disapflag = true;
                                     nodesPresent[k] = 0;
                                     disappearingFlag = neighbours[j];
-                                    std::cout << "-------"<< disappearingFlag ;
                                     disCount = 3;
+                                    disTimeOfDeath = '4';
                                 }
                             }
                         }
                     }
 		        }
-		        std::cout << "\n";
                 memset(checkNode, 0 , sizeof checkNode);
                 disappearance = 0;
 		    }
@@ -498,13 +618,16 @@ main(int argc, char *argv[])
             // Check if new router, and add to list
 			add_new_addr((struct sockaddr *)&their_addr, other_routers);
 
+
+
 		}
 		while((tv.tv_sec > 0) && (tv.tv_usec > 0));
         disappearance++;
         if(disCount > 0){
-            disCount++;
+            disCount--;
         }
 
 	}
+	routerOutput.close();
 	return 0;
 }
